@@ -169,11 +169,14 @@ def main() -> int:
         files = [p for p in src_year_dir.iterdir() if p.is_file() and p.suffix.lower() in IMG_EXTS]
         files.sort(key=lambda p: p.name.lower())
 
+        expected_outputs: set[str] = set()
         for p in files:
             total_in += 1
             stem = p.stem
             out_big = out_year_dir / f"{stem}.webp"
             out_thumb = out_year_dir / f"{stem}_thumb.webp"
+            expected_outputs.add(out_big.name)
+            expected_outputs.add(out_thumb.name)
 
             # 解析时间：优先EXIF，其次文件名
             ts = None
@@ -213,6 +216,15 @@ def main() -> int:
                     **dims,
                 }
             )
+
+        # 清理：若源照片被删除/更名，则删除输出目录里遗留的webp，避免仓库膨胀
+        try:
+            for out_file in out_year_dir.iterdir():
+                if out_file.is_file() and out_file.suffix.lower() == ".webp":
+                    if out_file.name not in expected_outputs:
+                        out_file.unlink(missing_ok=True)
+        except Exception:
+            pass
 
         # 同一年内部按时间排序（没有时间则按文件名）
         items.sort(key=lambda it: (it["ts"] is None, it["ts"] or 0, it["name"].lower()))
