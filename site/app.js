@@ -364,6 +364,20 @@
   }
 
   async function load() {
+    // 手机端/部分浏览器会“记住上次滚动位置”，导致再次打开不在顶部；这里强制回到页面顶部（有 hash 时尊重锚点）。
+    if (!location.hash) {
+      try {
+        if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+      } catch (_) {
+        // ignore
+      }
+      const goTop = () => window.scrollTo(0, 0);
+      goTop();
+      window.requestAnimationFrame(goTop);
+      window.setTimeout(goTop, 120);
+      window.setTimeout(goTop, 480);
+    }
+
     const bgm = createBgmController();
 
     const btnHero = $("#musicToggle");
