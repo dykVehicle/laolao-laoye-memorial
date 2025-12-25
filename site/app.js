@@ -3,6 +3,21 @@
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const PLACEHOLDER_SRC = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
 
+  function forceTopIfNeeded() {
+    if (location.hash) return false;
+    try {
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    } catch (_) {
+      // ignore
+    }
+    const goTop = () => window.scrollTo(0, 0);
+    goTop();
+    window.requestAnimationFrame(goTop);
+    window.setTimeout(goTop, 120);
+    window.setTimeout(goTop, 480);
+    return true;
+  }
+
   const toastEl = $("#toast");
   function toast(msg) {
     if (!toastEl) return;
@@ -39,46 +54,123 @@
 
   function setupLazyThumbs(rootEl) {
     if (!rootEl) return;
-    const imgs = $$("img.photo__img[data-src]", rootEl);
-    if (imgs.length === 0) return;
+    if (!rootEl.querySelector("img.photo__img[data-src]")) return;
 
     const loadOne = (img) => {
-      if (!img || !img.dataset) return;
+      if (!img || !img.dataset) return false;
       const src = img.dataset.src;
-      if (!src) return;
+      if (!src) return false;
       img.src = src;
       delete img.dataset.src;
+      return true;
     };
 
-    if ("IntersectionObserver" in window) {
-      const io = new IntersectionObserver(
-        (entries) => {
-          for (const ent of entries) {
-            if (!ent.isIntersecting) continue;
-            const img = ent.target;
-            loadOne(img);
-            io.unobserve(img);
-          }
-        },
-        { root: null, rootMargin: "420px 0px", threshold: 0.01 }
-      );
-      for (const img of imgs) io.observe(img);
-      return;
-    }
+    const pickFromYear = (yearEl) => {
+      if (!yearEl) return null;
+      return yearEl.querySelector("img.photo__img[data-src]");
+    };
 
-    // 兼容兜底：分批加载，避免一次性并发导致手机端卡死
-    let i = 0;
-    const batch = () => {
-      const t0 = performance.now();
-      let loaded = 0;
-      while (i < imgs.length && loaded < 10 && performance.now() - t0 < 12) {
-        loadOne(imgs[i]);
-        i++;
-        loaded++;
+    const findCurrentYear = () => {
+      try {
+        const x = Math.floor(window.innerWidth / 2);
+        const y = Math.floor(window.innerHeight * 0.35);
+        const el = document.elementFromPoint(x, y);
+        return el && el.closest ? el.closest(".year") : null;
+      } catch (_) {
+        return null;
       }
-      if (i < imgs.length) window.setTimeout(batch, 120);
     };
-    batch();
+
+    let scheduled = 0;
+
+    const nearTimeline = () => {
+      if (window.scrollY > 200) return true;
+      const r = rootEl.getBoundingClientRect();
+      return r.top < window.innerHeight * 1.8;
+    };
+
+    const loadIn = (container, limit) => {
+      if (!container || limit <= 0) return 0;
+      const imgs = $$("img.photo__img[data-src]", container);
+      let n = 0;
+      for (const img of imgs) {
+        if (loadOne(img)) n++;
+        if (n >= limit) break;
+      }
+      return n;
+    };
+
+    const loadNearViewport = (limit = 12) => {
+      const year = findCurrentYear();
+      if (!year) return loadIn(rootEl, limit);
+
+      let n = 0;
+      n += loadIn(year, limit);
+      let left = limit - n;
+      if (left <= 0) return n;
+
+      const next = year.nextElementSibling;
+      if (next && next.classList && next.classList.contains("year")) {
+        const c = loadIn(next, Math.ceil(left / 2));
+        n += c;
+        left -= c;
+      }
+      if (left > 0) {
+        const prev = year.previousElementSibling;
+        if (prev && prev.classList && prev.classList.contains("year")) {
+          n += loadIn(prev, left);
+        }
+      }
+      return n;
+    };
+
+    const nowMs = () => (window.performance && performance.now ? performance.now() : Date.now());
+
+    const step = () => {
+      scheduled = 0;
+      if (document.hidden) return;
+      if (!nearTimeline()) return;
+
+      const t0 = nowMs();
+      const loaded = loadNearViewport(12);
+      // 首次进入时间轴时再补一小批，让首屏更快出现
+      if (loaded > 0 && nowMs() - t0 < 10) loadNearViewport(8);
+
+      const year = findCurrentYear();
+      let hasMoreNear = false;
+      if (year) {
+        hasMoreNear = !!pickFromYear(year);
+        if (!hasMoreNear) {
+          const next = year.nextElementSibling;
+          if (next && next.classList && next.classList.contains("year")) hasMoreNear = !!pickFromYear(next);
+        }
+        if (!hasMoreNear) {
+          const prev = year.previousElementSibling;
+          if (prev && prev.classList && prev.classList.contains("year")) hasMoreNear = !!pickFromYear(prev);
+        }
+      } else {
+        hasMoreNear = !!rootEl.querySelector("img.photo__img[data-src]");
+      }
+
+      if (hasMoreNear) schedule(loaded ? 180 : 260);
+    };
+
+    const schedule = (delay = 0) => {
+      if (scheduled) return;
+      scheduled = window.setTimeout(() => window.requestAnimationFrame(step), delay);
+    };
+
+    const onHint = () => schedule(0);
+    window.addEventListener("scroll", onHint, { passive: true });
+    window.addEventListener("resize", onHint);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) schedule(0);
+    });
+
+    // Kickstart：立即尝试加载视口附近缩略图（避免用户看到一屏空白骨架）
+    schedule(0);
+    window.setTimeout(() => schedule(0), 200);
+    window.setTimeout(() => schedule(0), 800);
   }
 
   function buildTimeline(data) {
@@ -364,19 +456,8 @@
   }
 
   async function load() {
-    // 手机端/部分浏览器会“记住上次滚动位置”，导致再次打开不在顶部；这里强制回到页面顶部（有 hash 时尊重锚点）。
-    if (!location.hash) {
-      try {
-        if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-      } catch (_) {
-        // ignore
-      }
-      const goTop = () => window.scrollTo(0, 0);
-      goTop();
-      window.requestAnimationFrame(goTop);
-      window.setTimeout(goTop, 120);
-      window.setTimeout(goTop, 480);
-    }
+    // 页面进入时默认回到顶部（无 hash 时）。部分手机 WebView 会恢复上次滚动位置，这里强制覆盖。
+    forceTopIfNeeded();
 
     const bgm = createBgmController();
 
@@ -413,6 +494,26 @@
     let unlocked = false;
     let autoplayToastShown = false;
     let autoplayInFlight = false;
+
+    const tryWeixinBridge = () => {
+      try {
+        const w = window.WeixinJSBridge;
+        if (w && typeof w.invoke === "function") {
+          w.invoke("getNetworkType", {}, () => onUserGesture());
+        }
+      } catch (_) {
+        // ignore
+      }
+      try {
+        const y = window.YixinJSBridge;
+        if (y && typeof y.invoke === "function") {
+          y.invoke("getNetworkType", {}, () => onUserGesture());
+        }
+      } catch (_) {
+        // ignore
+      }
+    };
+
     const onUserGesture = async () => {
       if (unlocked || autoplayInFlight) return;
       autoplayInFlight = true;
@@ -442,9 +543,14 @@
       if (ok) unlocked = true;
       else if (!autoplayToastShown) {
         autoplayToastShown = true;
-        toast("如未自动播放：轻触页面任意位置即可自动开启音乐");
+        toast("音乐默认已开启：若未播放，轻触/滑动页面即可自动开始");
       }
     }
+
+    // 微信/部分内置浏览器：主动触发 JSBridge（即使 Ready 事件已错过也能尝试）
+    tryWeixinBridge();
+    window.setTimeout(tryWeixinBridge, 600);
+    window.setTimeout(tryWeixinBridge, 1600);
 
     // 加载照片数据
     let data = null;
@@ -531,6 +637,8 @@
   }
 
   window.addEventListener("DOMContentLoaded", load);
+  // 处理 bfcache/返回恢复场景：再次显示页面时也强制回到顶部（无 hash 时）。
+  window.addEventListener("pageshow", () => forceTopIfNeeded());
 })();
 
 
