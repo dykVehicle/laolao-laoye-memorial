@@ -96,6 +96,11 @@ def save_webp(img: Image.Image, out_path: Path, quality: int) -> None:
     img.save(out_path, "WEBP", quality=quality, method=6)
 
 
+def save_jpg(img: Image.Image, out_path: Path, quality: int) -> None:
+    # JPEG 兼容性最好（微信/老WebView兜底）
+    img.save(out_path, "JPEG", quality=quality, optimize=True, progressive=True)
+
+
 def build_one(in_path: Path, out_big: Path, out_thumb: Path, max_big: int, max_thumb: int) -> dict:
     with Image.open(in_path) as im0:
         im = ImageOps.exif_transpose(im0)
@@ -113,6 +118,12 @@ def build_one(in_path: Path, out_big: Path, out_thumb: Path, max_big: int, max_t
         thumb.thumbnail((max_thumb, max_thumb), Image.Resampling.LANCZOS)
         # 缩略图：用于时间轴网格（尽量轻）
         save_webp(thumb, out_thumb, quality=70)
+
+        # 兼容兜底：再保存一份 JPEG（微信/老WebView不支持WebP时使用）
+        out_big_jpg = out_big.with_suffix(".jpg")
+        out_thumb_jpg = out_thumb.with_suffix(".jpg")
+        save_jpg(big, out_big_jpg, quality=82)
+        save_jpg(thumb, out_thumb_jpg, quality=72)
 
         return {
             "w": int(big.size[0]),
@@ -177,8 +188,12 @@ def main() -> int:
             stem = p.stem
             out_big = out_year_dir / f"{stem}.webp"
             out_thumb = out_year_dir / f"{stem}_thumb.webp"
+            out_big_jpg = out_year_dir / f"{stem}.jpg"
+            out_thumb_jpg = out_year_dir / f"{stem}_thumb.jpg"
             expected_outputs.add(out_big.name)
             expected_outputs.add(out_thumb.name)
+            expected_outputs.add(out_big_jpg.name)
+            expected_outputs.add(out_thumb_jpg.name)
 
             # 解析时间：优先EXIF，其次文件名
             ts = None
@@ -187,13 +202,33 @@ def main() -> int:
                 with Image.open(p) as imx:
                     ex = parse_dt_from_exif(imx)
                 dtx = ex or parse_dt_from_name(p.name)
-                if dtx:
-                    ts = int(dtx.timestamp())
-                    date_str = dtx.strftime("%Y-%m-%d %H:%M:%S")
+                if not dtx:
+                    # 兜底：用源文件 mtime（有些老照片无EXIF且文件名无日期）
+                    dtx = dt.datetime.fromtimestamp(p.stat().st_mtime)
+
+                # 修复“年份错乱”：以文件夹年份为准（避免2011文件夹里出现2012/2019）
+                try:
+                    dtx = dtx.replace(year=year)
+                except ValueError:
+                    # 极小概率遇到 2/29 等边界，回退到 3/1
+                    dtx = dtx.replace(year=year, month=3, day=1)
+
+                ts = int(dtx.timestamp())
+                date_str = dtx.strftime("%Y-%m-%d %H:%M:%S")
             except Exception:
                 pass
 
-            need = args.force or (not out_big.exists()) or (not out_thumb.exists()) or newer_than(p, out_big) or newer_than(p, out_thumb)
+            need = (
+                args.force
+                or (not out_big.exists())
+                or (not out_thumb.exists())
+                or (not out_big_jpg.exists())
+                or (not out_thumb_jpg.exists())
+                or newer_than(p, out_big)
+                or newer_than(p, out_thumb)
+                or newer_than(p, out_big_jpg)
+                or newer_than(p, out_thumb_jpg)
+            )
             dims = {"w": 0, "h": 0, "tw": 0, "th": 0}
             if need:
                 dims = build_one(p, out_big, out_thumb, args.max_big, args.max_thumb)
@@ -215,6 +250,8 @@ def main() -> int:
                     "ts": ts,
                     "src": f"assets/photos/{year}/{out_big.name}",
                     "thumb": f"assets/photos/{year}/{out_thumb.name}",
+                    "srcJpg": f"assets/photos/{year}/{out_big_jpg.name}",
+                    "thumbJpg": f"assets/photos/{year}/{out_thumb_jpg.name}",
                     **dims,
                 }
             )
@@ -222,7 +259,7 @@ def main() -> int:
         # 清理：若源照片被删除/更名，则删除输出目录里遗留的webp，避免仓库膨胀
         try:
             for out_file in out_year_dir.iterdir():
-                if out_file.is_file() and out_file.suffix.lower() == ".webp":
+                if out_file.is_file() and out_file.suffix.lower() in (".webp", ".jpg", ".jpeg"):
                     if out_file.name not in expected_outputs:
                         out_file.unlink(missing_ok=True)
         except Exception:

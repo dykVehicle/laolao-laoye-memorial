@@ -2,6 +2,8 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const PLACEHOLDER_SRC = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
+  const UA = (navigator.userAgent || "").toLowerCase();
+  const IS_WECHAT = UA.includes("micromessenger");
 
   function forceTopIfNeeded() {
     if (location.hash) return false;
@@ -56,109 +58,73 @@
     if (!rootEl) return;
     if (!rootEl.querySelector("img.photo__img[data-src]")) return;
 
+    const bindFallback = (img) => {
+      if (!img || img._fallbackBound) return;
+      img._fallbackBound = true;
+      img.addEventListener("error", () => {
+        try {
+          const fb = img.dataset && img.dataset.fallback;
+          if (fb && img.src !== fb) {
+            // 只回退一次，避免循环
+            delete img.dataset.fallback;
+            img.src = fb;
+          }
+        } catch (_) {
+          // ignore
+        }
+      });
+    };
+
     const loadOne = (img) => {
       if (!img || !img.dataset) return false;
       const src = img.dataset.src;
       if (!src) return false;
+      bindFallback(img);
       img.src = src;
       delete img.dataset.src;
       return true;
     };
 
-    const pickFromYear = (yearEl) => {
-      if (!yearEl) return null;
-      return yearEl.querySelector("img.photo__img[data-src]");
-    };
-
-    const findCurrentYear = () => {
-      try {
-        const x = Math.floor(window.innerWidth / 2);
-        const y = Math.floor(window.innerHeight * 0.35);
-        const el = document.elementFromPoint(x, y);
-        return el && el.closest ? el.closest(".year") : null;
-      } catch (_) {
-        return null;
-      }
-    };
-
     let scheduled = 0;
-    const bootUntil = Date.now() + 12_000; // 兜底：防止滚动位置“延迟恢复”导致永远不触发加载
+    const bootUntil = Date.now() + 12000; // 兜底：防止滚动位置“延迟恢复”导致永远不触发加载
 
     const nearTimeline = () => {
+      // scrollY 在部分内置浏览器偶尔不可靠，所以同时用 bounding rect 兜底
       if (window.scrollY > 200) return true;
       const r = rootEl.getBoundingClientRect();
       return r.top < window.innerHeight * 1.8;
     };
 
-    const loadIn = (container, limit) => {
-      if (!container || limit <= 0) return 0;
-      const imgs = $$("img.photo__img[data-src]", container);
+    const loadVisible = (limit) => {
+      const imgs = $$("img.photo__img[data-src]", rootEl);
+      if (imgs.length === 0) return 0;
+      const vh = window.innerHeight || 800;
+      const topBound = -vh * 0.8;
+      const bottomBound = vh * 1.8;
       let n = 0;
       for (const img of imgs) {
+        // 微信内置浏览器在某些机型上 elementFromPoint/closest 不稳定，改用矩形判断更可靠
+        const r = img.getBoundingClientRect();
+        if (r.bottom < topBound || r.top > bottomBound) continue;
         if (loadOne(img)) n++;
         if (n >= limit) break;
       }
       return n;
     };
 
-    const loadNearViewport = (limit = 12) => {
-      const year = findCurrentYear();
-      if (!year) return loadIn(rootEl, limit);
-
-      let n = 0;
-      n += loadIn(year, limit);
-      let left = limit - n;
-      if (left <= 0) return n;
-
-      const next = year.nextElementSibling;
-      if (next && next.classList && next.classList.contains("year")) {
-        const c = loadIn(next, Math.ceil(left / 2));
-        n += c;
-        left -= c;
-      }
-      if (left > 0) {
-        const prev = year.previousElementSibling;
-        if (prev && prev.classList && prev.classList.contains("year")) {
-          n += loadIn(prev, left);
-        }
-      }
-      return n;
-    };
-
-    const nowMs = () => (window.performance && performance.now ? performance.now() : Date.now());
-
     const step = () => {
       scheduled = 0;
       if (document.hidden) return;
-      if (!nearTimeline()) {
-        // 某些手机 WebView 会在页面加载后“静默恢复”滚动位置，且不触发 scroll 事件。
-        // 因此在启动的前一段时间里主动轮询一下，避免出现“时间轴到了，但缩略图一直空白”。
-        if (Date.now() < bootUntil) schedule(360);
-        return;
-      }
 
-      const t0 = nowMs();
-      const loaded = loadNearViewport(6);
-      // 首次进入时间轴时再补一小批，让首屏更快出现
-      if (loaded > 0 && nowMs() - t0 < 10) loadNearViewport(4);
+      const isBoot = Date.now() < bootUntil;
+      if (!nearTimeline() && !isBoot) return;
 
-      const year = findCurrentYear();
-      let hasMoreNear = false;
-      if (year) {
-        hasMoreNear = !!pickFromYear(year);
-        if (!hasMoreNear) {
-          const next = year.nextElementSibling;
-          if (next && next.classList && next.classList.contains("year")) hasMoreNear = !!pickFromYear(next);
-        }
-        if (!hasMoreNear) {
-          const prev = year.previousElementSibling;
-          if (prev && prev.classList && prev.classList.contains("year")) hasMoreNear = !!pickFromYear(prev);
-        }
-      } else {
-        hasMoreNear = !!rootEl.querySelector("img.photo__img[data-src]");
-      }
+      // 微信下多给一点首屏额度，减少“停在某一年但一直空白”的概率
+      const limit = IS_WECHAT ? 10 : 6;
+      const loaded = loadVisible(limit);
 
-      if (hasMoreNear) schedule(loaded ? 220 : 320);
+      // 若有“静默恢复滚动位置”但没触发事件，boot 窗口内主动轮询
+      if (loaded === 0 && isBoot) schedule(360);
     };
 
     const schedule = (delay = 0) => {
@@ -235,8 +201,13 @@
         img.decoding = "async";
         img.alt = `回忆照片 ${label}`;
         img.src = PLACEHOLDER_SRC;
-        const thumbSrc = it.thumb || it.src;
+        // 微信/部分内置浏览器可能不支持 WebP：默认用 WebP，失败则回退到 JPEG
+        const thumbWebp = it.thumb || it.src;
+        const thumbJpg = it.thumbJpg || it.srcJpg;
+        const thumbSrc = thumbWebp || thumbJpg;
+        const thumbFallback = thumbWebp && thumbJpg ? thumbJpg : "";
         if (thumbSrc) img.dataset.src = thumbSrc;
+        if (thumbFallback && thumbFallback !== thumbSrc) img.dataset.fallback = thumbFallback;
         if (it.tw && it.th) {
           img.width = it.tw;
           img.height = it.th;
@@ -269,6 +240,8 @@
 
     let current = -1;
     let loadToken = 0;
+    let hasHistoryTrap = false;
+    let closingFromPop = false;
     const LOADING_TEXT = "正在加载清晰大图…";
     const SLOW_TEXT = "网络较慢，已先显示预览…";
     let slowHintT = null;
@@ -325,36 +298,72 @@
 
     function show(i) {
       if (!flatItems || !flatItems[i]) return;
+      const wasHidden = box.hidden;
       current = i;
       const it = flatItems[i];
       const label = formatDateLabel(it.date, it.year);
 
       // 先用缩略图“秒开”，再在后台加载清晰大图，减少感知等待
-      const thumbSrc = it.thumb || it.src;
-      const fullSrc = it.src || it.thumb;
+      const thumbWebp = it.thumb || it.src;
+      const thumbJpg = it.thumbJpg || it.srcJpg;
+      const thumbSrc = thumbWebp || thumbJpg;
+      const thumbFallback = thumbWebp && thumbJpg ? thumbJpg : "";
+
+      const fullWebp = it.src || it.thumb;
+      const fullJpg = it.srcJpg || it.thumbJpg;
+      const fullSrc = fullWebp || fullJpg;
+      const fullFallback = fullWebp && fullJpg ? fullJpg : "";
       const token = ++loadToken;
 
       imgEl.decoding = "async";
       imgEl.alt = `回忆照片 ${label || it.year}`;
-      if (thumbSrc) imgEl.src = thumbSrc;
+      // 预览图：若 WebP 不支持，回退到 JPG
+      imgEl.onerror = null;
+      if (thumbSrc) {
+        imgEl.onerror = () => {
+          if (token !== loadToken) return;
+          if (thumbFallback && imgEl.src !== thumbFallback) imgEl.src = thumbFallback;
+        };
+        imgEl.src = thumbSrc;
+      }
       if (dateEl) dateEl.textContent = label || `${it.year}`;
       if (metaEl) metaEl.textContent = it.name ? `文件：${it.name}` : "";
       setVisible(true);
 
+      if (wasHidden) {
+        // 手机手势返回/返回键：优先退出大图，而不是退出页面
+        try {
+          history.pushState({ ...(history.state || {}), __lightbox: 1 }, "", location.href);
+          hasHistoryTrap = true;
+        } catch (_) {
+          hasHistoryTrap = false;
+        }
+      }
+
       if (fullSrc && fullSrc !== thumbSrc) {
         setLoading(true);
-        const pre = new Image();
-        pre.decoding = "async";
-        pre.src = fullSrc;
-        pre.onload = () => {
-          if (token !== loadToken) return;
-          imgEl.src = fullSrc;
-          setLoading(false);
+        const tryLoadFull = (src, onFail) => {
+          const pre = new Image();
+          pre.decoding = "async";
+          pre.src = src;
+          pre.onload = () => {
+            if (token !== loadToken) return;
+            imgEl.src = src;
+            setLoading(false);
+          };
+          pre.onerror = () => {
+            if (token !== loadToken) return;
+            onFail && onFail();
+          };
         };
-        pre.onerror = () => {
-          if (token !== loadToken) return;
+
+        tryLoadFull(fullSrc, () => {
+          if (fullFallback && fullFallback !== fullSrc) {
+            tryLoadFull(fullFallback, () => setLoading(false));
+            return;
+          }
           setLoading(false);
-        };
+        });
       } else {
         setLoading(false);
       }
@@ -367,6 +376,15 @@
       loadToken++;
       setLoading(false);
       setVisible(false);
+      if (hasHistoryTrap && !closingFromPop) {
+        // 让返回栈回到“打开大图之前”的状态
+        hasHistoryTrap = false;
+        try {
+          history.back();
+        } catch (_) {
+          // ignore
+        }
+      }
     }
 
     function prev() {
@@ -392,6 +410,16 @@
       if (e.key === "Escape") close();
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
+    });
+
+    // 手机返回手势/返回键：触发 popstate
+    window.addEventListener("popstate", () => {
+      if (!box.hidden) {
+        closingFromPop = true;
+        close();
+        closingFromPop = false;
+      }
+      hasHistoryTrap = false;
     });
 
     return {
