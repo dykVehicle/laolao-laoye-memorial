@@ -17,7 +17,8 @@ test("时间轴渲染，点击照片可打开/关闭查看器", async ({ page })
   await expect(page.locator("#lightbox")).toBeVisible();
   await expect(page.locator("#lightboxImg")).toHaveAttribute("src", /assets\/photos\//);
 
-  await page.click("[data-close='1']");
+  // 关闭：点击“×”按钮（避免点击backdrop被图片层拦截导致用例不稳定）
+  await page.getByRole("button", { name: "关闭" }).click();
   await expect(page.locator("#lightbox")).toBeHidden();
 });
 
