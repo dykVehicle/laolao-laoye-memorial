@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f6efe9" />
+    <meta
+      name="description"
+      content="记录与亲爱的姥姥姥爷相处的点滴，永远怀念！——2011-2018 时光相册"
+    />
+    <title>怀念姥姥姥爷｜2011–2018 时光相册</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#timeline">跳到照片时间轴</a>
+
+    <header class="topbar">
+      <div class="topbar__inner">
+        <div class="brand">
+          <div class="brand__title">姥姥 &amp; 姥爷</div>
+          <div class="brand__sub">2011 — 2018 · 时光瞬间</div>
+        </div>
+
+        <nav class="nav">
+          <a class="nav__link" href="#timeline">时间轴</a>
+          <a class="nav__link" href="#about">写在前面</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-label="开篇">
+        <div class="hero__inner">
+          <h1 class="hero__headline">记录与亲爱的姥姥姥爷相处的点滴，永远怀念！</h1>
+          <p class="hero__lead">
+            这些照片来自 2011—2018 的日常瞬间：一次团聚、一顿家常饭、一个回头的笑。
+          </p>
+          <p class="hero__lead hero__lead--dim">
+            姥姥、姥爷已于 2022 年底离开我们，但爱与记忆仍在。愿思念化作温柔的光，陪我们走更远。
+          </p>
+
+          <div class="hero__actions">
+            <a class="btn" href="#timeline">开始回忆</a>
+            <button id="musicToggle" class="btn btn--ghost" type="button" aria-pressed="false">
+              开启音乐
+            </button>
+          </div>
+
+          <div class="hint" aria-hidden="true">向下滚动 · 让时间慢一点</div>
+        </div>
+      </section>
+
+      <section class="wrap" id="about" aria-label="写在前面">
+        <div class="card card--note">
+          <h2 class="card__title">写在前面</h2>
+          <p class="card__text">
+            这是一份用照片串起的回忆：我们把每一年、每一个瞬间轻轻放在时间里。愿你在翻看时，能听见那些熟悉的叮嘱与笑声，也能想起被爱照顾过的自己。
+          </p>
+          <p class="card__text card__text--dim">（提示：点击照片可放大查看；右下角音乐按钮可随时开关。）</p>
+        </div>
+      </section>
+
+      <section class="wrap" aria-label="照片时间轴">
+        <div class="section-title">
+          <h2 class="section-title__h" id="timeline">时间轴</h2>
+          <p class="section-title__p">按年份排序 · 每张照片都是一个“还在身边”的片段</p>
+        </div>
+
+        <div id="timelineRoot" class="timeline" aria-live="polite">
+          <div class="loading">
+            <div class="loading__dot"></div>
+            <div class="loading__dot"></div>
+            <div class="loading__dot"></div>
+            <div class="loading__text">正在整理照片…</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__inner">
+        <div class="footer__line">愿你们在另一个世界安好。</div>
+        <div class="footer__sub">如果你愿意，也可以把这页分享给家人，一起慢慢回忆。</div>
+      </div>
+    </footer>
+
+    <button id="floatingMusic" class="music-fab" type="button" aria-label="背景音乐开关" aria-pressed="false">
+      <span class="music-fab__icon" aria-hidden="true">♪</span>
+      <span class="music-fab__text">音乐</span>
+    </button>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <div id="lightbox" class="lightbox" hidden aria-hidden="true">
+      <div class="lightbox__backdrop" data-close="1"></div>
+      <div class="lightbox__panel" role="dialog" aria-modal="true" aria-label="照片查看器">
+        <button class="lightbox__close" type="button" data-close="1" aria-label="关闭">×</button>
+        <button class="lightbox__nav lightbox__nav--prev" type="button" data-prev="1" aria-label="上一张">‹</button>
+        <button class="lightbox__nav lightbox__nav--next" type="button" data-next="1" aria-label="下一张">›</button>
+        <figure class="lightbox__figure">
+          <img id="lightboxImg" class="lightbox__img" alt="回忆照片" />
+          <figcaption class="lightbox__cap">
+            <div id="lightboxDate" class="lightbox__date"></div>
+            <div id="lightboxMeta" class="lightbox__meta"></div>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
+
+

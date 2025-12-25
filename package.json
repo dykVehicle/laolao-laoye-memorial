@@ -1,0 +1,17 @@
+{
+  "name": "memorial-site",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "serve": "python -m http.server 8000 -d site",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}
+
+
