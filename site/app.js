@@ -1,6 +1,7 @@
 (() => {
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const PLACEHOLDER_SRC = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
 
   const toastEl = $("#toast");
   function toast(msg) {
@@ -34,6 +35,50 @@
 
   function byYearDesc(a, b) {
     return b.year - a.year;
+  }
+
+  function setupLazyThumbs(rootEl) {
+    if (!rootEl) return;
+    const imgs = $$("img.photo__img[data-src]", rootEl);
+    if (imgs.length === 0) return;
+
+    const loadOne = (img) => {
+      if (!img || !img.dataset) return;
+      const src = img.dataset.src;
+      if (!src) return;
+      img.src = src;
+      delete img.dataset.src;
+    };
+
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const ent of entries) {
+            if (!ent.isIntersecting) continue;
+            const img = ent.target;
+            loadOne(img);
+            io.unobserve(img);
+          }
+        },
+        { root: null, rootMargin: "420px 0px", threshold: 0.01 }
+      );
+      for (const img of imgs) io.observe(img);
+      return;
+    }
+
+    // 兼容兜底：分批加载，避免一次性并发导致手机端卡死
+    let i = 0;
+    const batch = () => {
+      const t0 = performance.now();
+      let loaded = 0;
+      while (i < imgs.length && loaded < 10 && performance.now() - t0 < 12) {
+        loadOne(imgs[i]);
+        i++;
+        loaded++;
+      }
+      if (i < imgs.length) window.setTimeout(batch, 120);
+    };
+    batch();
   }
 
   function buildTimeline(data) {
@@ -86,10 +131,14 @@
 
         const img = document.createElement("img");
         img.className = "photo__img";
+        // 注意：部分手机/内置浏览器对 loading=lazy 支持不稳定，仍可能一次性请求所有缩略图。
+        // 所以这里用 data-src + IntersectionObserver 做“强制按需加载”，避免卡死。
         img.loading = "lazy";
         img.decoding = "async";
         img.alt = `回忆照片 ${label}`;
-        img.src = it.thumb || it.src;
+        img.src = PLACEHOLDER_SRC;
+        const thumbSrc = it.thumb || it.src;
+        if (thumbSrc) img.dataset.src = thumbSrc;
         if (it.tw && it.th) {
           img.width = it.tw;
           img.height = it.th;
@@ -122,6 +171,9 @@
 
     let current = -1;
     let loadToken = 0;
+    const LOADING_TEXT = "正在加载清晰大图…";
+    const SLOW_TEXT = "网络较慢，已先显示预览…";
+    let slowHintT = null;
 
     function setVisible(v) {
       if (v) {
@@ -136,9 +188,31 @@
     }
 
     function setLoading(v) {
-      if (loadingEl) loadingEl.hidden = !v;
-      if (v) imgEl.classList.add("lightbox__img--soft");
-      else imgEl.classList.remove("lightbox__img--soft");
+      if (loadingEl) {
+        loadingEl.hidden = !v;
+        if (v) loadingEl.textContent = LOADING_TEXT;
+      }
+      if (v) {
+        imgEl.classList.add("lightbox__img--soft");
+        window.clearTimeout(slowHintT);
+        slowHintT = window.setTimeout(() => {
+          if (loadingEl && !loadingEl.hidden) loadingEl.textContent = SLOW_TEXT;
+        }, 2600);
+      } else {
+        imgEl.classList.remove("lightbox__img--soft");
+        window.clearTimeout(slowHintT);
+        slowHintT = null;
+        if (loadingEl) loadingEl.textContent = LOADING_TEXT;
+      }
+    }
+
+    function canPrefetch() {
+      const c = navigator.connection;
+      if (!c) return true;
+      if (c.saveData) return false;
+      const t = (c.effectiveType || "").toLowerCase();
+      if (t.includes("2g") || t.includes("slow-2g") || t.includes("3g")) return false;
+      return true;
     }
 
     function prefetch(i) {
@@ -148,7 +222,6 @@
       if (!src) return;
       const im = new Image();
       im.decoding = "async";
-      im.loading = "eager";
       im.src = src;
     }
 
@@ -175,14 +248,7 @@
         const pre = new Image();
         pre.decoding = "async";
         pre.src = fullSrc;
-        pre.onload = async () => {
-          if (token !== loadToken) return;
-          try {
-            // 避免半加载闪烁
-            if (pre.decode) await pre.decode();
-          } catch (_) {
-            // ignore
-          }
+        pre.onload = () => {
           if (token !== loadToken) return;
           imgEl.src = fullSrc;
           setLoading(false);
@@ -196,11 +262,12 @@
       }
 
       // 预取相邻图片，提升翻页/自动播放流畅度
-      prefetch(i + 1);
-      prefetch(i - 1);
+      if (canPrefetch()) prefetch(i + 1);
     }
 
     function close() {
+      loadToken++;
+      setLoading(false);
       setVisible(false);
     }
 
@@ -252,7 +319,8 @@
     let playing = false;
     if (audio) {
       audio.loop = true;
-      audio.preload = "none";
+      // 让浏览器自行决定（HTML里已设为 metadata + autoplay）
+      audio.preload = audio.getAttribute("preload") || "metadata";
       audio.volume = 0.45;
     }
 
@@ -327,17 +395,47 @@
       bgm.setVolume(0.35);
     }
 
-    // 默认尝试循环播放（若浏览器拦截，会提示并等待用户手势）
+    // 默认尝试循环播放（不同手机/微信内置浏览器策略不同，尽量提高成功率）
+    let unlocked = false;
+    let autoplayToastShown = false;
+    let autoplayInFlight = false;
+    const onUserGesture = async () => {
+      if (unlocked || autoplayInFlight) return;
+      autoplayInFlight = true;
+      const ok = await bgm.play();
+      autoplayInFlight = false;
+      syncButtons(ok);
+      if (ok) {
+        unlocked = true;
+        // 用 capture=true（布尔）移除，兼容部分老WebView对 options 对象的支持差异
+        document.removeEventListener("pointerdown", onUserGesture, true);
+        document.removeEventListener("touchstart", onUserGesture, true);
+        document.removeEventListener("click", onUserGesture, true);
+      }
+    };
+
+    // 先注册（避免某些WebView事件很早触发）
+    document.addEventListener("pointerdown", onUserGesture, { passive: true, capture: true });
+    document.addEventListener("touchstart", onUserGesture, { passive: true, capture: true });
+    document.addEventListener("click", onUserGesture, { passive: true, capture: true });
+    document.addEventListener("WeixinJSBridgeReady", onUserGesture, false);
+    document.addEventListener("YixinJSBridgeReady", onUserGesture, false);
+
+    // 立即尝试一次
     {
       const ok = await bgm.play();
       syncButtons(ok);
-      if (!ok) toast("浏览器限制自动播放：请点击“开启音乐”或“开始回忆”");
+      if (ok) unlocked = true;
+      else if (!autoplayToastShown) {
+        autoplayToastShown = true;
+        toast("如未自动播放：轻触页面任意位置即可自动开启音乐");
+      }
     }
 
     // 加载照片数据
     let data = null;
     try {
-      const res = await fetch("./data/gallery.json", { cache: "no-store" });
+      const res = await fetch("./data/gallery.json");
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       data = await res.json();
     } catch (e) {
@@ -345,6 +443,7 @@
     }
 
     const flat = buildTimeline(data) || [];
+    setupLazyThumbs($("#timelineRoot"));
     const lightbox = createLightbox(flat);
     const open = (idx) => {
       if (typeof lightbox === "function") return lightbox(idx);
