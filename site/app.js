@@ -444,19 +444,56 @@
     const audio = $("#bgm");
     let playing = false;
     let fadeToken = 0;
+    // 记录“期望音量”，避免兼容自动播放时把 volume 置 0 后无法恢复，导致“音乐不响”
+    let preferredVolume = 0.45;
+
+    function clamp01(v) {
+      return Math.max(0, Math.min(1, v));
+    }
+
+    function getVolumeSafe() {
+      if (!audio) return preferredVolume;
+      try {
+        const v = typeof audio.volume === "number" ? audio.volume : preferredVolume;
+        return Number.isFinite(v) ? v : preferredVolume;
+      } catch (_) {
+        return preferredVolume;
+      }
+    }
+
+    function restoreVolumeIfNeeded() {
+      if (!audio) return;
+      try {
+        const v = getVolumeSafe();
+        if (v <= 0.001 && preferredVolume > 0.001) {
+          audio.volume = preferredVolume;
+        }
+      } catch (_) {
+        // ignore
+      }
+    }
+
     if (audio) {
       audio.loop = true;
       // 让浏览器自行决定（HTML里已设为 metadata + autoplay）
       audio.preload = audio.getAttribute("preload") || "metadata";
-      audio.volume = 0.45;
+      preferredVolume = 0.45;
+      try {
+        audio.volume = preferredVolume;
+      } catch (_) {
+        // ignore
+      }
     }
 
     async function play() {
       if (!audio) return false;
       try {
         fadeToken++;
+        // 若之前被兼容逻辑置为 0，这里在“有声播放”场景先恢复音量
+        if (!audio.muted) restoreVolumeIfNeeded();
         await audio.play();
         playing = true;
+        if (!audio.muted) restoreVolumeIfNeeded();
         return true;
       } catch (e) {
         playing = false;
@@ -473,7 +510,13 @@
 
     function setMuted(m) {
       if (!audio) return;
-      audio.muted = !!m;
+      try {
+        audio.muted = !!m;
+      } catch (_) {
+        // ignore
+      }
+      // 用户手势解除静音时，确保音量不为 0（否则“看似播放成功但不响”）
+      if (!m) restoreVolumeIfNeeded();
     }
 
     async function autoplaySmart() {
@@ -483,16 +526,12 @@
       const normalOk = await play();
       if (normalOk) return true;
 
-      // 再尝试“静音启动 → 解除静音/淡入音量”（部分浏览器/内置 WebView 会放行静音自动播放）
+      // 再尝试“静音启动”（部分浏览器/内置 WebView 会放行静音自动播放）
+      // 注意：不要把 volume 置为 0（会导致后续用户点击播放时仍不响）
       const token = ++fadeToken;
-      const target = typeof audio.volume === "number" ? audio.volume : 0.45;
       try {
         audio.muted = true;
-        try {
-          audio.volume = 0;
-        } catch (_) {
-          // ignore
-        }
+        restoreVolumeIfNeeded();
         await audio.play();
         playing = true;
       } catch (e) {
@@ -502,10 +541,11 @@
         } catch (_) {
           // ignore
         }
+        restoreVolumeIfNeeded();
         return false;
       }
 
-      // 尝试解除静音并淡入（不保证所有浏览器都允许“无手势解除静音”）
+      // 尝试解除静音（不保证所有浏览器都允许“无手势解除静音”）
       window.setTimeout(() => {
         if (token !== fadeToken) return;
         try {
@@ -513,21 +553,7 @@
         } catch (_) {
           // ignore
         }
-
-        const t0 = performance.now ? performance.now() : Date.now();
-        const dur = 900;
-        const tick = () => {
-          if (token !== fadeToken) return;
-          const now = performance.now ? performance.now() : Date.now();
-          const p = Math.max(0, Math.min(1, (now - t0) / dur));
-          try {
-            audio.volume = target * p;
-          } catch (_) {
-            // ignore
-          }
-          if (p < 1) window.requestAnimationFrame(tick);
-        };
-        window.requestAnimationFrame(tick);
+        restoreVolumeIfNeeded();
       }, 120);
 
       return true;
@@ -539,19 +565,43 @@
       pause,
       toggle: async () => {
         if (!audio) return false;
-        if (playing && !audio.paused) {
+        const isRunning = playing && !audio.paused;
+        const v = getVolumeSafe();
+        const audibleNow = isRunning && !audio.muted && v > 0.001;
+        // 若“正在播放但静音/音量为0”，点击应当变成“开启有声”，而不是先暂停
+        if (audibleNow) {
           pause();
           return false;
         }
+        try {
+          audio.muted = false;
+        } catch (_) {
+          // ignore
+        }
+        restoreVolumeIfNeeded();
+        if (isRunning) return true;
         return await play();
       },
       setMuted,
       setVolume: (v) => {
         if (!audio) return;
-        audio.volume = Math.max(0, Math.min(1, v));
+        const vv = clamp01(v);
+        preferredVolume = vv;
+        try {
+          audio.volume = vv;
+        } catch (_) {
+          // ignore
+        }
       },
       get playing() {
         return !!audio && playing && !audio.paused;
+      },
+      get audible() {
+        if (!audio) return false;
+        if (!playing || audio.paused) return false;
+        if (audio.muted) return false;
+        const v = getVolumeSafe();
+        return v > 0.001;
       },
     };
   }
@@ -578,10 +628,10 @@
     }
 
     async function toggleMusic() {
-      bgm.setMuted(false);
-      const playing = await bgm.toggle();
-      syncButtons(playing);
-      toast(playing ? "音乐已开启" : "音乐已关闭");
+      await bgm.toggle();
+      const audible = bgm.audible;
+      syncButtons(audible);
+      toast(audible ? "音乐已开启" : "音乐已关闭");
     }
 
     if (btnHero) btnHero.addEventListener("click", toggleMusic);
@@ -623,7 +673,7 @@
       bgm.setMuted(false);
       const ok = await bgm.play();
       autoplayInFlight = false;
-      syncButtons(ok);
+      syncButtons(bgm.audible);
       if (ok) {
         unlocked = true;
         // 用 capture=true（布尔）移除，兼容部分老WebView对 options 对象的支持差异
@@ -642,9 +692,10 @@
 
     // 立即尝试一次（尽最大可能自动播放）
     {
-      const ok = await bgm.autoplaySmart();
-      syncButtons(ok);
-      if (ok) unlocked = true;
+      await bgm.autoplaySmart();
+      const audible = bgm.audible;
+      syncButtons(audible);
+      if (audible) unlocked = true;
       else if (!autoplayToastShown) {
         autoplayToastShown = true;
         toast("音乐默认已开启：若未播放，轻触/滑动页面即可自动开始");
@@ -716,8 +767,8 @@
         if (timeline && timeline.scrollIntoView) timeline.scrollIntoView({ behavior: "smooth", block: "start" });
         // 利用用户点击手势，确保音乐能成功启动
         bgm.setMuted(false);
-        const ok = await bgm.play();
-        syncButtons(ok);
+        await bgm.play();
+        syncButtons(bgm.audible);
         startSlideshow();
       });
     }
