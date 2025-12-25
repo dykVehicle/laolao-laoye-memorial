@@ -106,11 +106,13 @@ def build_one(in_path: Path, out_big: Path, out_thumb: Path, max_big: int, max_t
 
         big = im.copy()
         big.thumbnail((max_big, max_big), Image.Resampling.LANCZOS)
-        save_webp(big, out_big, quality=82)
+        # 大图：用于查看器（兼顾清晰度与加载速度）
+        save_webp(big, out_big, quality=80)
 
         thumb = im.copy()
         thumb.thumbnail((max_thumb, max_thumb), Image.Resampling.LANCZOS)
-        save_webp(thumb, out_thumb, quality=72)
+        # 缩略图：用于时间轴网格（尽量轻）
+        save_webp(thumb, out_thumb, quality=70)
 
         return {
             "w": int(big.size[0]),
@@ -140,8 +142,8 @@ def main() -> int:
         default=str(Path(__file__).resolve().parent.parent / "site"),
         help="网站输出目录（默认：repo_root/site）",
     )
-    parser.add_argument("--max-big", type=int, default=1600, help="大图最长边像素（默认1600）")
-    parser.add_argument("--max-thumb", type=int, default=480, help="缩略图最长边像素（默认480）")
+    parser.add_argument("--max-big", type=int, default=1440, help="大图最长边像素（默认1440）")
+    parser.add_argument("--max-thumb", type=int, default=420, help="缩略图最长边像素（默认420）")
     parser.add_argument("--force", action="store_true", help="强制重新生成所有图片")
 
     args = parser.parse_args()

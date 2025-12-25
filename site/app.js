@@ -17,16 +17,19 @@
 
   function formatDateLabel(dateStr, year) {
     const s = safeText(dateStr).trim();
-    if (!s) return `${year} 年`;
+    const fallbackYear = safeText(year).trim();
+    if (!s) return fallbackYear ? `${fallbackYear}` : "";
     // 支持 "YYYY-MM-DD HH:MM:SS" / "YYYY-MM-DD"
     const parts = s.split(" ");
     const ymd = parts[0] || "";
     const hms = parts[1] || "";
     const ys = ymd.split("-");
-    if (ys.length !== 3) return `${year} 年`;
-    const mmdd = `${ys[1]}-${ys[2]}`;
-    if (hms && hms.length >= 5) return `${mmdd} ${hms.slice(0, 5)}`;
-    return mmdd;
+    if (ys.length !== 3) return fallbackYear ? `${fallbackYear}` : "";
+    const yyyy = ys[0] || fallbackYear;
+    const mm = ys[1] || "01";
+    const dd = ys[2] || "01";
+    if (hms && hms.length >= 5) return `${yyyy}.${mm}.${dd}.${hms.slice(0, 5)}`;
+    return `${yyyy}.${mm}.${dd}`;
   }
 
   function byYearDesc(a, b) {
@@ -114,9 +117,11 @@
     const imgEl = $("#lightboxImg");
     const dateEl = $("#lightboxDate");
     const metaEl = $("#lightboxMeta");
+    const loadingEl = $("#lightboxLoading");
     if (!box || !imgEl) return () => {};
 
     let current = -1;
+    let loadToken = 0;
 
     function setVisible(v) {
       if (v) {
@@ -130,15 +135,69 @@
       }
     }
 
+    function setLoading(v) {
+      if (loadingEl) loadingEl.hidden = !v;
+      if (v) imgEl.classList.add("lightbox__img--soft");
+      else imgEl.classList.remove("lightbox__img--soft");
+    }
+
+    function prefetch(i) {
+      const it = flatItems && flatItems[i];
+      if (!it) return;
+      const src = it.src || it.thumb;
+      if (!src) return;
+      const im = new Image();
+      im.decoding = "async";
+      im.loading = "eager";
+      im.src = src;
+    }
+
     function show(i) {
       if (!flatItems || !flatItems[i]) return;
       current = i;
       const it = flatItems[i];
-      imgEl.src = it.src || it.thumb;
-      imgEl.alt = `回忆照片 ${formatDateLabel(it.date, it.year)}`;
-      if (dateEl) dateEl.textContent = `${it.year} · ${formatDateLabel(it.date, it.year)}`;
+      const label = formatDateLabel(it.date, it.year);
+
+      // 先用缩略图“秒开”，再在后台加载清晰大图，减少感知等待
+      const thumbSrc = it.thumb || it.src;
+      const fullSrc = it.src || it.thumb;
+      const token = ++loadToken;
+
+      imgEl.decoding = "async";
+      imgEl.alt = `回忆照片 ${label || it.year}`;
+      if (thumbSrc) imgEl.src = thumbSrc;
+      if (dateEl) dateEl.textContent = label || `${it.year}`;
       if (metaEl) metaEl.textContent = it.name ? `文件：${it.name}` : "";
       setVisible(true);
+
+      if (fullSrc && fullSrc !== thumbSrc) {
+        setLoading(true);
+        const pre = new Image();
+        pre.decoding = "async";
+        pre.src = fullSrc;
+        pre.onload = async () => {
+          if (token !== loadToken) return;
+          try {
+            // 避免半加载闪烁
+            if (pre.decode) await pre.decode();
+          } catch (_) {
+            // ignore
+          }
+          if (token !== loadToken) return;
+          imgEl.src = fullSrc;
+          setLoading(false);
+        };
+        pre.onerror = () => {
+          if (token !== loadToken) return;
+          setLoading(false);
+        };
+      } else {
+        setLoading(false);
+      }
+
+      // 预取相邻图片，提升翻页/自动播放流畅度
+      prefetch(i + 1);
+      prefetch(i - 1);
     }
 
     function close() {
@@ -170,168 +229,78 @@
       if (e.key === "ArrowRight") next();
     });
 
-    return (idx) => show(idx);
+    return {
+      open: (idx) => show(idx),
+      close,
+      prev,
+      next,
+      get index() {
+        return current;
+      },
+      get isOpen() {
+        return !box.hidden;
+      },
+      get atEnd() {
+        return current >= flatItems.length - 1;
+      },
+    };
   }
 
-  // ---- 温柔“钢琴”合成：WebAudio 轻音乐（无外部音频，避免版权问题） ----
-  function createPianoEngine() {
-    let ctx = null;
-    let master = null;
-    let convolver = null;
-    let intervalId = null;
-    let isPlaying = false;
-    let nextBarAt = 0;
-
-    function impulseResponse(seconds, decay) {
-      const rate = ctx.sampleRate;
-      const length = rate * seconds;
-      const buffer = ctx.createBuffer(2, length, rate);
-      for (let c = 0; c < 2; c++) {
-        const ch = buffer.getChannelData(c);
-        for (let i = 0; i < length; i++) {
-          const t = i / length;
-          ch[i] = (Math.random() * 2 - 1) * Math.pow(1 - t, decay);
-        }
-      }
-      return buffer;
+  // ---- 背景音乐：使用用户提供的 MP3（循环播放） ----
+  function createBgmController() {
+    const audio = $("#bgm");
+    let playing = false;
+    if (audio) {
+      audio.loop = true;
+      audio.preload = "none";
+      audio.volume = 0.45;
     }
 
-    function ensure() {
-      if (ctx) return;
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      ctx = new AudioCtx();
-      master = ctx.createGain();
-      master.gain.value = 0.26;
-
-      const dry = ctx.createGain();
-      dry.gain.value = 0.82;
-      const wet = ctx.createGain();
-      wet.gain.value = 0.24;
-
-      convolver = ctx.createConvolver();
-      convolver.buffer = impulseResponse(2.3, 2.2);
-
-      master.connect(dry);
-      master.connect(convolver);
-      convolver.connect(wet);
-      dry.connect(ctx.destination);
-      wet.connect(ctx.destination);
-    }
-
-    function midiToFreq(m) {
-      return 440 * Math.pow(2, (m - 69) / 12);
-    }
-
-    function playNote(midi, when, dur, vel) {
-      const f = midiToFreq(midi);
-
-      const osc1 = ctx.createOscillator();
-      osc1.type = "triangle";
-      osc1.frequency.value = f;
-
-      const osc2 = ctx.createOscillator();
-      osc2.type = "sine";
-      osc2.frequency.value = f * 2;
-
-      const filter = ctx.createBiquadFilter();
-      filter.type = "lowpass";
-      filter.frequency.setValueAtTime(1700, when);
-      filter.Q.value = 0.85;
-
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.0001, when);
-      g.gain.exponentialRampToValueAtTime(Math.max(0.0002, vel), when + 0.01);
-      g.gain.exponentialRampToValueAtTime(0.0001, when + dur);
-
-      osc1.connect(filter);
-      osc2.connect(filter);
-      filter.connect(g);
-      g.connect(master);
-
-      const end = when + dur + 0.08;
-      osc1.start(when);
-      osc2.start(when);
-      osc1.stop(end);
-      osc2.stop(end);
-    }
-
-    // 4小节循环：Cmaj7 → Am7 → Fmaj7 → Gadd9（温柔、回忆感）
-    const bars = [
-      [60, 64, 67, 71],
-      [57, 60, 64, 67],
-      [53, 57, 60, 64],
-      [55, 59, 62, 67],
-    ];
-    const barLen = 3.2; // seconds
-
-    function scheduleBar(barIndex, t0) {
-      const chord = bars[barIndex % bars.length];
-      // 轻柔琶音：低→高→中→高（更像“钢琴手感”）
-      const order = [0, 2, 1, 3, 2];
-      for (let i = 0; i < order.length; i++) {
-        const n = chord[order[i]];
-        const when = t0 + i * 0.42;
-        playNote(n, when, 1.6, 0.16);
-        // 添一点点“高音闪光”
-        if (i === 1 || i === 3) playNote(n + 12, when + 0.02, 1.2, 0.08);
+    async function play() {
+      if (!audio) return false;
+      try {
+        await audio.play();
+        playing = true;
+        return true;
+      } catch (e) {
+        playing = false;
+        return false;
       }
     }
 
-    function scheduler() {
-      if (!isPlaying) return;
-      const now = ctx.currentTime;
-      const ahead = 0.8;
-      while (nextBarAt < now + ahead) {
-        const barIndex = Math.floor((nextBarAt - startAt) / barLen);
-        scheduleBar(barIndex, nextBarAt);
-        nextBarAt += barLen;
-      }
-    }
-
-    let startAt = 0;
-    async function start() {
-      ensure();
-      if (ctx.state === "suspended") await ctx.resume();
-      if (isPlaying) return;
-      isPlaying = true;
-      startAt = ctx.currentTime + 0.08;
-      nextBarAt = startAt;
-      scheduler();
-      intervalId = window.setInterval(scheduler, 160);
-    }
-
-    function stop() {
-      isPlaying = false;
-      if (intervalId) window.clearInterval(intervalId);
-      intervalId = null;
-      // 不强制close context，避免频繁创建导致兼容问题
-    }
-
-    function setVolume(v) {
-      ensure();
-      master.gain.value = Math.max(0, Math.min(0.6, v));
+    function pause() {
+      if (!audio) return;
+      audio.pause();
+      playing = false;
     }
 
     return {
-      start,
-      stop,
+      play,
+      pause,
       toggle: async () => {
-        if (isPlaying) stop();
-        else await start();
-        return isPlaying;
+        if (!audio) return false;
+        if (playing && !audio.paused) {
+          pause();
+          return false;
+        }
+        return await play();
       },
-      setVolume,
+      setVolume: (v) => {
+        if (!audio) return;
+        audio.volume = Math.max(0, Math.min(1, v));
+      },
       get playing() {
-        return isPlaying;
+        return !!audio && playing && !audio.paused;
       },
     };
   }
 
   async function load() {
-    const engine = createPianoEngine();
+    const bgm = createBgmController();
 
     const btnHero = $("#musicToggle");
     const btnFab = $("#floatingMusic");
+    const btnStart = $("#startMemories");
     function syncButtons(playing) {
       const label = playing ? "关闭音乐" : "开启音乐";
       if (btnHero) {
@@ -345,7 +314,7 @@
     }
 
     async function toggleMusic() {
-      const playing = await engine.toggle();
+      const playing = await bgm.toggle();
       syncButtons(playing);
       toast(playing ? "音乐已开启" : "音乐已关闭");
     }
@@ -355,7 +324,14 @@
 
     // 轻微降噪：若用户系统偏好“减少动态”，默认不提示自动播放
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      engine.setVolume(0.18);
+      bgm.setVolume(0.35);
+    }
+
+    // 默认尝试循环播放（若浏览器拦截，会提示并等待用户手势）
+    {
+      const ok = await bgm.play();
+      syncButtons(ok);
+      if (!ok) toast("浏览器限制自动播放：请点击“开启音乐”或“开始回忆”");
     }
 
     // 加载照片数据
@@ -369,7 +345,11 @@
     }
 
     const flat = buildTimeline(data) || [];
-    const open = createLightbox(flat);
+    const lightbox = createLightbox(flat);
+    const open = (idx) => {
+      if (typeof lightbox === "function") return lightbox(idx);
+      return lightbox && lightbox.open ? lightbox.open(idx) : undefined;
+    };
 
     // 绑定点击事件（事件代理）
     const root = $("#timelineRoot");
@@ -380,6 +360,51 @@
         if (!card) return;
         const idx = Number(card.getAttribute("data-idx"));
         if (Number.isFinite(idx)) open(idx);
+      });
+    }
+
+    // “开始回忆”：滚动到时间轴 + 开启音乐 + 自动播放相册
+    let slideTimer = null;
+    function stopSlideshow() {
+      if (slideTimer) window.clearInterval(slideTimer);
+      slideTimer = null;
+    }
+    function startSlideshow() {
+      if (!flat || flat.length === 0) return;
+      stopSlideshow();
+      if (lightbox && lightbox.open) lightbox.open(0);
+      else open(0);
+
+      // 每张停留 5 秒（含加载清晰大图的时间）
+      slideTimer = window.setInterval(() => {
+        if (!lightbox || !lightbox.isOpen) return stopSlideshow();
+        if (lightbox.atEnd) {
+          stopSlideshow();
+          toast("已播放到最后一张");
+          return;
+        }
+        lightbox.next();
+      }, 5000);
+    }
+
+    if (btnStart) {
+      btnStart.addEventListener("click", async () => {
+        const timeline = $("#timeline");
+        if (timeline && timeline.scrollIntoView) timeline.scrollIntoView({ behavior: "smooth", block: "start" });
+        // 利用用户点击手势，确保音乐能成功启动
+        const ok = await bgm.play();
+        syncButtons(ok);
+        startSlideshow();
+      });
+    }
+
+    // 用户手动操作查看器时，停止自动播放（避免“抢操作”）
+    const box = $("#lightbox");
+    if (box) {
+      box.addEventListener("click", (e) => {
+        const t = e.target;
+        if (!t || !t.dataset) return;
+        if (t.dataset.close === "1" || t.dataset.prev === "1" || t.dataset.next === "1") stopSlideshow();
       });
     }
 

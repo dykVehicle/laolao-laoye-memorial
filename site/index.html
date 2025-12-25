@@ -41,13 +41,41 @@
           </p>
 
           <div class="hero__actions">
-            <a class="btn" href="#timeline">开始回忆</a>
+            <button id="startMemories" class="btn btn--primary" type="button">开始回忆</button>
             <button id="musicToggle" class="btn btn--ghost" type="button" aria-pressed="false">
               开启音乐
             </button>
           </div>
 
           <div class="hint" aria-hidden="true">向下滚动 · 让时间慢一点</div>
+        </div>
+      </section>
+
+      <section class="wrap" id="poem" aria-label="献给姥姥姥爷的诗">
+        <div class="card poem">
+          <h2 class="card__title poem__title">田埂上的灯火</h2>
+          <p class="poem__text">
+            田埂很窄，却走出一生的宽；<br />
+            风里泥里，你们把日子一锄一锄种下。<br />
+            清晨的露，落在粗糙的指节，<br />
+            傍晚的炊烟，升起一家人的安稳。<br />
+            <br />
+            姥姥黄金鹅（农历1930年二月十六生，属马），<br />
+            把辛劳熬成热汤，把温柔藏在叮咛里；<br />
+            姥爷罗德美（1931年八月十二生，属羊），<br />
+            弯下的是脊梁，撑起的是这个家。<br />
+            <br />
+            你们把汗水留给土地，<br />
+            把笑声留给孩子，<br />
+            把牵挂交给后辈，<br />
+            把自己放在最后。<br />
+            <br />
+            姥姥：农历2022年十一月十一离开；<br />
+            姥爷：农历2022年十二月初十离开。<br />
+            从此我们在人间想念，<br />
+            你们在星河安然。
+          </p>
+          <p class="card__text card__text--dim poem__meta">谨以此页与此诗，敬献给最朴素也最伟大的爱。</p>
         </div>
       </section>
 
@@ -92,12 +120,22 @@
 
     <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
+    <audio
+      id="bgm"
+      src="./assets/bgm.mp3"
+      preload="none"
+      loop
+      playsinline
+      aria-label="背景音乐"
+    ></audio>
+
     <div id="lightbox" class="lightbox" hidden aria-hidden="true">
       <div class="lightbox__backdrop" data-close="1"></div>
       <div class="lightbox__panel" role="dialog" aria-modal="true" aria-label="照片查看器">
         <button class="lightbox__close" type="button" data-close="1" aria-label="关闭">×</button>
         <button class="lightbox__nav lightbox__nav--prev" type="button" data-prev="1" aria-label="上一张">‹</button>
         <button class="lightbox__nav lightbox__nav--next" type="button" data-next="1" aria-label="下一张">›</button>
+        <div id="lightboxLoading" class="lightbox__loading" hidden>正在加载清晰大图…</div>
         <figure class="lightbox__figure">
           <img id="lightboxImg" class="lightbox__img" alt="回忆照片" />
           <figcaption class="lightbox__cap">
