@@ -82,6 +82,7 @@
     };
 
     let scheduled = 0;
+    const bootUntil = Date.now() + 12_000; // 兜底：防止滚动位置“延迟恢复”导致永远不触发加载
 
     const nearTimeline = () => {
       if (window.scrollY > 200) return true;
@@ -129,12 +130,17 @@
     const step = () => {
       scheduled = 0;
       if (document.hidden) return;
-      if (!nearTimeline()) return;
+      if (!nearTimeline()) {
+        // 某些手机 WebView 会在页面加载后“静默恢复”滚动位置，且不触发 scroll 事件。
+        // 因此在启动的前一段时间里主动轮询一下，避免出现“时间轴到了，但缩略图一直空白”。
+        if (Date.now() < bootUntil) schedule(360);
+        return;
+      }
 
       const t0 = nowMs();
-      const loaded = loadNearViewport(12);
+      const loaded = loadNearViewport(6);
       // 首次进入时间轴时再补一小批，让首屏更快出现
-      if (loaded > 0 && nowMs() - t0 < 10) loadNearViewport(8);
+      if (loaded > 0 && nowMs() - t0 < 10) loadNearViewport(4);
 
       const year = findCurrentYear();
       let hasMoreNear = false;
@@ -152,7 +158,7 @@
         hasMoreNear = !!rootEl.querySelector("img.photo__img[data-src]");
       }
 
-      if (hasMoreNear) schedule(loaded ? 180 : 260);
+      if (hasMoreNear) schedule(loaded ? 220 : 320);
     };
 
     const schedule = (delay = 0) => {
@@ -409,6 +415,7 @@
   function createBgmController() {
     const audio = $("#bgm");
     let playing = false;
+    let fadeToken = 0;
     if (audio) {
       audio.loop = true;
       // 让浏览器自行决定（HTML里已设为 metadata + autoplay）
@@ -419,6 +426,7 @@
     async function play() {
       if (!audio) return false;
       try {
+        fadeToken++;
         await audio.play();
         playing = true;
         return true;
@@ -430,12 +438,76 @@
 
     function pause() {
       if (!audio) return;
+      fadeToken++;
       audio.pause();
       playing = false;
     }
 
+    function setMuted(m) {
+      if (!audio) return;
+      audio.muted = !!m;
+    }
+
+    async function autoplaySmart() {
+      if (!audio) return false;
+
+      // 先尝试正常播放（如果浏览器允许有声自动播放，会直接成功）
+      const normalOk = await play();
+      if (normalOk) return true;
+
+      // 再尝试“静音启动 → 解除静音/淡入音量”（部分浏览器/内置 WebView 会放行静音自动播放）
+      const token = ++fadeToken;
+      const target = typeof audio.volume === "number" ? audio.volume : 0.45;
+      try {
+        audio.muted = true;
+        try {
+          audio.volume = 0;
+        } catch (_) {
+          // ignore
+        }
+        await audio.play();
+        playing = true;
+      } catch (e) {
+        playing = false;
+        try {
+          audio.muted = false;
+        } catch (_) {
+          // ignore
+        }
+        return false;
+      }
+
+      // 尝试解除静音并淡入（不保证所有浏览器都允许“无手势解除静音”）
+      window.setTimeout(() => {
+        if (token !== fadeToken) return;
+        try {
+          audio.muted = false;
+        } catch (_) {
+          // ignore
+        }
+
+        const t0 = performance.now ? performance.now() : Date.now();
+        const dur = 900;
+        const tick = () => {
+          if (token !== fadeToken) return;
+          const now = performance.now ? performance.now() : Date.now();
+          const p = Math.max(0, Math.min(1, (now - t0) / dur));
+          try {
+            audio.volume = target * p;
+          } catch (_) {
+            // ignore
+          }
+          if (p < 1) window.requestAnimationFrame(tick);
+        };
+        window.requestAnimationFrame(tick);
+      }, 120);
+
+      return true;
+    }
+
     return {
       play,
+      autoplaySmart,
       pause,
       toggle: async () => {
         if (!audio) return false;
@@ -445,6 +517,7 @@
         }
         return await play();
       },
+      setMuted,
       setVolume: (v) => {
         if (!audio) return;
         audio.volume = Math.max(0, Math.min(1, v));
@@ -477,6 +550,7 @@
     }
 
     async function toggleMusic() {
+      bgm.setMuted(false);
       const playing = await bgm.toggle();
       syncButtons(playing);
       toast(playing ? "音乐已开启" : "音乐已关闭");
@@ -517,6 +591,8 @@
     const onUserGesture = async () => {
       if (unlocked || autoplayInFlight) return;
       autoplayInFlight = true;
+      // 用户手势场景：确保解除静音后再播放
+      bgm.setMuted(false);
       const ok = await bgm.play();
       autoplayInFlight = false;
       syncButtons(ok);
@@ -536,9 +612,9 @@
     document.addEventListener("WeixinJSBridgeReady", onUserGesture, false);
     document.addEventListener("YixinJSBridgeReady", onUserGesture, false);
 
-    // 立即尝试一次
+    // 立即尝试一次（尽最大可能自动播放）
     {
-      const ok = await bgm.play();
+      const ok = await bgm.autoplaySmart();
       syncButtons(ok);
       if (ok) unlocked = true;
       else if (!autoplayToastShown) {
@@ -611,6 +687,7 @@
         const timeline = $("#timeline");
         if (timeline && timeline.scrollIntoView) timeline.scrollIntoView({ behavior: "smooth", block: "start" });
         // 利用用户点击手势，确保音乐能成功启动
+        bgm.setMuted(false);
         const ok = await bgm.play();
         syncButtons(ok);
         startSlideshow();
