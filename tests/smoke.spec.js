@@ -28,8 +28,8 @@ test("时间轴渲染，点击照片/视频可打开/关闭查看器", async ({ 
     await expect(img).toHaveAttribute("src", /assets\/photos\//);
   }
 
-  // 关闭：点击“×”按钮（避免点击backdrop被图片层拦截导致用例不稳定）
-  await page.getByRole("button", { name: "关闭", exact: true }).click();
+  // 关闭：按 ESC（避免图片/视频层拦截点击导致用例不稳定）
+  await page.keyboard.press("Escape");
   await expect(page.locator("#lightbox")).toBeHidden();
 });
 
