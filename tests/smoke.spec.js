@@ -7,7 +7,7 @@ test("首页能正常加载并包含开篇文字", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("时间轴渲染，点击照片可打开/关闭查看器", async ({ page }) => {
+test("时间轴渲染，点击照片/视频可打开/关闭查看器", async ({ page }) => {
   await page.goto("/");
   await page.waitForSelector(".year");
   const first = page.locator(".photo").first();
@@ -15,7 +15,17 @@ test("时间轴渲染，点击照片可打开/关闭查看器", async ({ page })
 
   await first.click();
   await expect(page.locator("#lightbox")).toBeVisible();
-  await expect(page.locator("#lightboxImg")).toHaveAttribute("src", /assets\/photos\//);
+
+  const isVideo = await first.evaluate((el) => el.classList.contains("photo--video"));
+  if (isVideo) {
+    const v = page.locator("#lightboxVideo");
+    await expect(v).toBeVisible();
+    await expect(v).toHaveJSProperty("src", /assets\/videos\//);
+  } else {
+    const img = page.locator("#lightboxImg");
+    await expect(img).toBeVisible();
+    await expect(img).toHaveAttribute("src", /assets\/photos\//);
+  }
 
   // 关闭：点击“×”按钮（避免点击backdrop被图片层拦截导致用例不稳定）
   await page.getByRole("button", { name: "关闭", exact: true }).click();

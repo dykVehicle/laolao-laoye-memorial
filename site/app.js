@@ -2,6 +2,7 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const PLACEHOLDER_SRC = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
+  const VIDEO_PLACEHOLDER_SRC = "assets/video-placeholder.svg";
   const UA = (navigator.userAgent || "").toLowerCase();
   const IS_WECHAT = UA.includes("micromessenger");
 
@@ -31,6 +32,12 @@
 
   function safeText(s) {
     return (s || "").toString();
+  }
+
+  function isVideoItem(it) {
+    const k = safeText(it && (it.kind || it.type)).toLowerCase();
+    if (k === "video") return true;
+    return Boolean(it && it.video);
   }
 
   function formatDateLabel(dateStr, year) {
@@ -172,13 +179,20 @@
 
       const section = document.createElement("section");
       section.className = "year";
-      section.setAttribute("aria-label", `${year} 年照片`);
+      section.setAttribute("aria-label", `${year} 年照片与视频`);
+
+      const videosCount = items.filter(isVideoItem).length;
+      const photosCount = Math.max(0, items.length - videosCount);
+      let countText = `${items.length} 条`;
+      if (videosCount && photosCount) countText = `${photosCount} 张 · ${videosCount} 段视频`;
+      else if (videosCount) countText = `${videosCount} 段视频`;
+      else countText = `${photosCount} 张`;
 
       const head = document.createElement("div");
       head.className = "year__head";
       head.innerHTML = `
         <h3 class="year__title">${year}</h3>
-        <div class="year__count">${items.length} 张</div>
+        <div class="year__count">${countText}</div>
       `;
 
       const grid = document.createElement("div");
@@ -187,11 +201,14 @@
       for (const it of items) {
         const idx = globalIndex++;
         const label = formatDateLabel(it.date, year);
+        const isVideo = isVideoItem(it);
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "photo";
+        btn.className = isVideo ? "photo photo--video" : "photo";
         btn.setAttribute("data-idx", String(idx));
-        btn.setAttribute("aria-label", `${year} 年照片：${label}，点击放大查看`);
+        const typeLabel = isVideo ? "视频" : "照片";
+        const actionLabel = isVideo ? "点击播放" : "点击放大查看";
+        btn.setAttribute("aria-label", `${year} 年${typeLabel}：${label || year}，${actionLabel}`);
 
         const img = document.createElement("img");
         img.className = "photo__img";
@@ -199,12 +216,12 @@
         // 所以这里用 data-src + IntersectionObserver 做“强制按需加载”，避免卡死。
         img.loading = "lazy";
         img.decoding = "async";
-        img.alt = `回忆照片 ${label}`;
+        img.alt = `回忆${typeLabel} ${label || year}`;
         img.src = PLACEHOLDER_SRC;
         // 微信/部分内置浏览器可能不支持 WebP：默认用 WebP，失败则回退到 JPEG
-        const thumbWebp = it.thumb || it.src;
-        const thumbJpg = it.thumbJpg || it.srcJpg;
-        const thumbSrc = thumbWebp || thumbJpg;
+        const thumbWebp = it.thumb || it.poster || (isVideo ? "" : it.src);
+        const thumbJpg = it.thumbJpg || it.posterJpg || it.srcJpg;
+        const thumbSrc = thumbWebp || thumbJpg || (isVideo ? VIDEO_PLACEHOLDER_SRC : "");
         const thumbFallback = thumbWebp && thumbJpg ? thumbJpg : "";
         if (thumbSrc) img.dataset.src = thumbSrc;
         if (thumbFallback && thumbFallback !== thumbSrc) img.dataset.fallback = thumbFallback;
@@ -215,7 +232,7 @@
 
         const chip = document.createElement("div");
         chip.className = "photo__label";
-        chip.textContent = label;
+        chip.textContent = isVideo ? `视频 · ${label || year}` : label;
 
         btn.appendChild(img);
         btn.appendChild(chip);
@@ -233,17 +250,20 @@
   function createLightbox(flatItems) {
     const box = $("#lightbox");
     const imgEl = $("#lightboxImg");
+    const videoEl = $("#lightboxVideo");
     const dateEl = $("#lightboxDate");
     const metaEl = $("#lightboxMeta");
     const loadingEl = $("#lightboxLoading");
-    if (!box || !imgEl) return () => {};
+    if (!box || (!imgEl && !videoEl)) return () => {};
 
     let current = -1;
     let loadToken = 0;
     let hasHistoryTrap = false;
     let closingFromPop = false;
-    const LOADING_TEXT = "正在加载清晰大图…";
-    const SLOW_TEXT = "网络较慢，已先显示预览…";
+    const LOADING_TEXT_IMG = "正在加载清晰大图…";
+    const SLOW_TEXT_IMG = "网络较慢，已先显示预览…";
+    const LOADING_TEXT_VIDEO = "正在加载视频…";
+    const SLOW_TEXT_VIDEO = "网络较慢，请稍候…";
     let slowHintT = null;
 
     function setVisible(v) {
@@ -258,22 +278,46 @@
       }
     }
 
-    function setLoading(v) {
+    function setLoading(v, kind = "image") {
+      const isVid = kind === "video";
+      const LOADING_TEXT = isVid ? LOADING_TEXT_VIDEO : LOADING_TEXT_IMG;
+      const SLOW_TEXT = isVid ? SLOW_TEXT_VIDEO : SLOW_TEXT_IMG;
       if (loadingEl) {
         loadingEl.hidden = !v;
         if (v) loadingEl.textContent = LOADING_TEXT;
       }
       if (v) {
-        imgEl.classList.add("lightbox__img--soft");
+        if (!isVid && imgEl) imgEl.classList.add("lightbox__img--soft");
         window.clearTimeout(slowHintT);
         slowHintT = window.setTimeout(() => {
           if (loadingEl && !loadingEl.hidden) loadingEl.textContent = SLOW_TEXT;
         }, 2600);
       } else {
-        imgEl.classList.remove("lightbox__img--soft");
+        if (imgEl) imgEl.classList.remove("lightbox__img--soft");
         window.clearTimeout(slowHintT);
         slowHintT = null;
-        if (loadingEl) loadingEl.textContent = LOADING_TEXT;
+        if (loadingEl) loadingEl.textContent = LOADING_TEXT_IMG;
+      }
+    }
+
+    function setMedia(kind) {
+      const isVid = kind === "video";
+      if (videoEl) videoEl.style.display = isVid ? "block" : "none";
+      if (imgEl) imgEl.style.display = isVid ? "none" : "block";
+    }
+
+    function stopVideo() {
+      if (!videoEl) return;
+      try {
+        videoEl.pause();
+      } catch (_) {
+        // ignore
+      }
+      try {
+        videoEl.removeAttribute("src");
+        videoEl.load();
+      } catch (_) {
+        // ignore
       }
     }
 
@@ -289,6 +333,7 @@
     function prefetch(i) {
       const it = flatItems && flatItems[i];
       if (!it) return;
+      if (isVideoItem(it)) return;
       const src = it.src || it.thumb;
       if (!src) return;
       const im = new Image();
@@ -302,6 +347,64 @@
       current = i;
       const it = flatItems[i];
       const label = formatDateLabel(it.date, it.year);
+      const isVideo = isVideoItem(it);
+      const token = ++loadToken;
+
+      // 从视频切走时，先停掉（避免后台继续占用带宽/音频）
+      stopVideo();
+
+      if (isVideo) {
+        setMedia("video");
+        const posterWebp = it.poster || it.thumb;
+        const posterJpg = it.posterJpg || it.thumbJpg;
+        // 微信下优先用 JPG，减少 WebP 不支持导致“黑底无封面”
+        const posterSrc = (IS_WECHAT && posterJpg) ? posterJpg : (posterWebp || posterJpg);
+
+        if (videoEl) {
+          try {
+            videoEl.poster = posterSrc || "";
+          } catch (_) {
+            // ignore
+          }
+
+          const vsrc = it.video || "";
+          if (vsrc) {
+            setLoading(true, "video");
+            const onReady = () => {
+              if (token !== loadToken) return;
+              setLoading(false, "video");
+            };
+            // 用一次性监听，避免多次翻页累积
+            videoEl.addEventListener("loadedmetadata", onReady, { once: true });
+            videoEl.addEventListener("error", onReady, { once: true });
+            try {
+              videoEl.src = vsrc;
+              videoEl.load();
+            } catch (_) {
+              setLoading(false, "video");
+            }
+          } else {
+            setLoading(false, "video");
+          }
+        }
+
+        if (dateEl) dateEl.textContent = label || `${it.year}`;
+        if (metaEl) metaEl.textContent = it.name ? `文件：${it.name}（视频）` : "视频";
+        setVisible(true);
+
+        if (wasHidden) {
+          // 手机手势返回/返回键：优先退出大图，而不是退出页面
+          try {
+            history.pushState({ ...(history.state || {}), __lightbox: 1 }, "", location.href);
+            hasHistoryTrap = true;
+          } catch (_) {
+            hasHistoryTrap = false;
+          }
+        }
+        return;
+      }
+
+      setMedia("image");
 
       // 先用缩略图“秒开”，再在后台加载清晰大图，减少感知等待
       const thumbWebp = it.thumb || it.src;
@@ -313,18 +416,20 @@
       const fullJpg = it.srcJpg || it.thumbJpg;
       const fullSrc = fullWebp || fullJpg;
       const fullFallback = fullWebp && fullJpg ? fullJpg : "";
-      const token = ++loadToken;
 
-      imgEl.decoding = "async";
-      imgEl.alt = `回忆照片 ${label || it.year}`;
+      if (imgEl) {
+        imgEl.decoding = "async";
+        imgEl.alt = `回忆照片 ${label || it.year}`;
+      }
       // 预览图：若 WebP 不支持，回退到 JPG
-      imgEl.onerror = null;
+      if (imgEl) imgEl.onerror = null;
       if (thumbSrc) {
-        imgEl.onerror = () => {
+        if (imgEl)
+          imgEl.onerror = () => {
           if (token !== loadToken) return;
           if (thumbFallback && imgEl.src !== thumbFallback) imgEl.src = thumbFallback;
         };
-        imgEl.src = thumbSrc;
+        if (imgEl) imgEl.src = thumbSrc;
       }
       if (dateEl) dateEl.textContent = label || `${it.year}`;
       if (metaEl) metaEl.textContent = it.name ? `文件：${it.name}` : "";
@@ -341,15 +446,15 @@
       }
 
       if (fullSrc && fullSrc !== thumbSrc) {
-        setLoading(true);
+        setLoading(true, "image");
         const tryLoadFull = (src, onFail) => {
           const pre = new Image();
           pre.decoding = "async";
           pre.src = src;
           pre.onload = () => {
             if (token !== loadToken) return;
-            imgEl.src = src;
-            setLoading(false);
+            if (imgEl) imgEl.src = src;
+            setLoading(false, "image");
           };
           pre.onerror = () => {
             if (token !== loadToken) return;
@@ -359,13 +464,13 @@
 
         tryLoadFull(fullSrc, () => {
           if (fullFallback && fullFallback !== fullSrc) {
-            tryLoadFull(fullFallback, () => setLoading(false));
+            tryLoadFull(fullFallback, () => setLoading(false, "image"));
             return;
           }
-          setLoading(false);
+          setLoading(false, "image");
         });
       } else {
-        setLoading(false);
+        setLoading(false, "image");
       }
 
       // 预取相邻图片，提升翻页/自动播放流畅度
@@ -374,7 +479,8 @@
 
     function close() {
       loadToken++;
-      setLoading(false);
+      stopVideo();
+      setLoading(false, "image");
       setVisible(false);
       if (hasHistoryTrap && !closingFromPop) {
         // 让返回栈回到“打开大图之前”的状态

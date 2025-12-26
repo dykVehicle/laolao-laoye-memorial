@@ -1,10 +1,86 @@
 {
-  "generatedAt": "2025-12-26T00:32:13",
+  "generatedAt": "2025-12-26T18:19:47",
   "years": [
+    {
+      "year": 2000,
+      "items": [
+        {
+          "kind": "image",
+          "name": "2000-1.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2000/2000-1.webp",
+          "thumb": "assets/photos/2000/2000-1_thumb.webp",
+          "srcJpg": "assets/photos/2000/2000-1.jpg",
+          "thumbJpg": "assets/photos/2000/2000-1_thumb.jpg",
+          "w": 810,
+          "h": 1440,
+          "tw": 236,
+          "th": 420
+        },
+        {
+          "kind": "image",
+          "name": "2000-100.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2000/2000-100.webp",
+          "thumb": "assets/photos/2000/2000-100_thumb.webp",
+          "srcJpg": "assets/photos/2000/2000-100.jpg",
+          "thumbJpg": "assets/photos/2000/2000-100_thumb.jpg",
+          "w": 810,
+          "h": 1440,
+          "tw": 236,
+          "th": 420
+        },
+        {
+          "kind": "image",
+          "name": "2000-2.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2000/2000-2.webp",
+          "thumb": "assets/photos/2000/2000-2_thumb.webp",
+          "srcJpg": "assets/photos/2000/2000-2.jpg",
+          "thumbJpg": "assets/photos/2000/2000-2_thumb.jpg",
+          "w": 810,
+          "h": 1440,
+          "tw": 236,
+          "th": 420
+        },
+        {
+          "kind": "image",
+          "name": "2000-3.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2000/2000-3.webp",
+          "thumb": "assets/photos/2000/2000-3_thumb.webp",
+          "srcJpg": "assets/photos/2000/2000-3.jpg",
+          "thumbJpg": "assets/photos/2000/2000-3_thumb.jpg",
+          "w": 810,
+          "h": 1440,
+          "tw": 236,
+          "th": 420
+        },
+        {
+          "kind": "image",
+          "name": "2000-4.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2000/2000-4.webp",
+          "thumb": "assets/photos/2000/2000-4_thumb.webp",
+          "srcJpg": "assets/photos/2000/2000-4.jpg",
+          "thumbJpg": "assets/photos/2000/2000-4_thumb.jpg",
+          "w": 810,
+          "h": 1440,
+          "tw": 236,
+          "th": 420
+        }
+      ]
+    },
     {
       "year": 2011,
       "items": [
         {
+          "kind": "image",
           "name": "IMG_20190203_162523.jpg",
           "date": "2011-02-03 16:25:23",
           "ts": 1296721523,
@@ -18,6 +94,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20190203_162526.jpg",
           "date": "2011-02-03 16:25:26",
           "ts": 1296721526,
@@ -31,6 +108,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20190203_162535.jpg",
           "date": "2011-02-03 16:25:35",
           "ts": 1296721535,
@@ -44,6 +122,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20190203_162538.jpg",
           "date": "2011-02-03 16:25:38",
           "ts": 1296721538,
@@ -57,6 +136,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20190203_162539.jpg",
           "date": "2011-02-03 16:25:39",
           "ts": 1296721539,
@@ -70,6 +150,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20190203_162547.jpg",
           "date": "2011-02-03 16:25:47",
           "ts": 1296721547,
@@ -83,6 +164,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20190203_162550.jpg",
           "date": "2011-02-03 16:25:50",
           "ts": 1296721550,
@@ -96,6 +178,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "1340687116700.jpg",
           "date": "2011-06-26 13:05:16",
           "ts": 1309064716,
@@ -109,6 +192,7 @@
           "th": 240
         },
         {
+          "kind": "image",
           "name": "1340687117019.jpg",
           "date": "2011-06-26 13:05:17",
           "ts": 1309064717,
@@ -122,282 +206,24 @@
           "th": 240
         },
         {
-          "name": "SP_A1081.jpg",
-          "date": "2011-07-24 07:40:28",
-          "ts": 1311464428,
-          "src": "assets/photos/2011/SP_A1081.webp",
-          "thumb": "assets/photos/2011/SP_A1081_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A1081.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A1081_thumb.jpg",
+          "kind": "image",
+          "name": "SP_A0211.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0211.webp",
+          "thumb": "assets/photos/2011/SP_A0211_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0211.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0211_thumb.jpg",
           "w": 320,
           "h": 240,
           "tw": 320,
           "th": 240
         },
         {
-          "name": "SP_A1075.jpg",
-          "date": "2011-07-24 07:50:22",
-          "ts": 1311465022,
-          "src": "assets/photos/2011/SP_A1075.webp",
-          "thumb": "assets/photos/2011/SP_A1075_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A1075.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A1075_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
-          "name": "SP_A1069.jpg",
-          "date": "2011-07-24 07:50:26",
-          "ts": 1311465026,
-          "src": "assets/photos/2011/SP_A1069.webp",
-          "thumb": "assets/photos/2011/SP_A1069_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A1069.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A1069_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
-          "name": "SP_A1070.jpg",
-          "date": "2011-07-24 07:50:26",
-          "ts": 1311465026,
-          "src": "assets/photos/2011/SP_A1070.webp",
-          "thumb": "assets/photos/2011/SP_A1070_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A1070.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A1070_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
-          "name": "SP_A1068.jpg",
-          "date": "2011-07-24 07:50:28",
-          "ts": 1311465028,
-          "src": "assets/photos/2011/SP_A1068.webp",
-          "thumb": "assets/photos/2011/SP_A1068_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A1068.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A1068_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
-          "name": "SP_A0870.jpg",
-          "date": "2011-07-24 07:54:56",
-          "ts": 1311465296,
-          "src": "assets/photos/2011/SP_A0870.webp",
-          "thumb": "assets/photos/2011/SP_A0870_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0870.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0870_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
-          "name": "SP_A0868.jpg",
-          "date": "2011-07-24 07:54:58",
-          "ts": 1311465298,
-          "src": "assets/photos/2011/SP_A0868.webp",
-          "thumb": "assets/photos/2011/SP_A0868_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0868.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0868_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
-          "name": "SP_A0811.jpg",
-          "date": "2011-07-24 07:55:46",
-          "ts": 1311465346,
-          "src": "assets/photos/2011/SP_A0811.webp",
-          "thumb": "assets/photos/2011/SP_A0811_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0811.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0811_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
-          "name": "SP_A0734.jpg",
-          "date": "2011-07-24 07:57:04",
-          "ts": 1311465424,
-          "src": "assets/photos/2011/SP_A0734.webp",
-          "thumb": "assets/photos/2011/SP_A0734_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0734.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0734_thumb.jpg",
-          "w": 640,
-          "h": 480,
-          "tw": 420,
-          "th": 315
-        },
-        {
-          "name": "SP_A0351.jpg",
-          "date": "2011-07-24 08:03:22",
-          "ts": 1311465802,
-          "src": "assets/photos/2011/SP_A0351.webp",
-          "thumb": "assets/photos/2011/SP_A0351_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0351.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0351_thumb.jpg",
-          "w": 240,
-          "h": 320,
-          "tw": 240,
-          "th": 320
-        },
-        {
-          "name": "SP_A0352.jpg",
-          "date": "2011-07-24 08:03:22",
-          "ts": 1311465802,
-          "src": "assets/photos/2011/SP_A0352.webp",
-          "thumb": "assets/photos/2011/SP_A0352_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0352.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0352_thumb.jpg",
-          "w": 240,
-          "h": 320,
-          "tw": 240,
-          "th": 320
-        },
-        {
-          "name": "SP_A0318.jpg",
-          "date": "2011-07-24 08:03:32",
-          "ts": 1311465812,
-          "src": "assets/photos/2011/SP_A0318.webp",
-          "thumb": "assets/photos/2011/SP_A0318_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0318.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0318_thumb.jpg",
-          "w": 240,
-          "h": 320,
-          "tw": 240,
-          "th": 320
-        },
-        {
-          "name": "SP_A0319.jpg",
-          "date": "2011-07-24 08:03:32",
-          "ts": 1311465812,
-          "src": "assets/photos/2011/SP_A0319.webp",
-          "thumb": "assets/photos/2011/SP_A0319_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0319.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0319_thumb.jpg",
-          "w": 240,
-          "h": 320,
-          "tw": 240,
-          "th": 320
-        },
-        {
-          "name": "SP_A0316.jpg",
-          "date": "2011-07-24 08:03:34",
-          "ts": 1311465814,
-          "src": "assets/photos/2011/SP_A0316.webp",
-          "thumb": "assets/photos/2011/SP_A0316_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0316.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0316_thumb.jpg",
-          "w": 240,
-          "h": 320,
-          "tw": 240,
-          "th": 320
-        },
-        {
-          "name": "SP_A0317.jpg",
-          "date": "2011-07-24 08:03:34",
-          "ts": 1311465814,
-          "src": "assets/photos/2011/SP_A0317.webp",
-          "thumb": "assets/photos/2011/SP_A0317_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0317.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0317_thumb.jpg",
-          "w": 240,
-          "h": 320,
-          "tw": 240,
-          "th": 320
-        },
-        {
-          "name": "SP_A0315.jpg",
-          "date": "2011-07-24 08:03:36",
-          "ts": 1311465816,
-          "src": "assets/photos/2011/SP_A0315.webp",
-          "thumb": "assets/photos/2011/SP_A0315_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0315.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0315_thumb.jpg",
-          "w": 240,
-          "h": 320,
-          "tw": 240,
-          "th": 320
-        },
-        {
-          "name": "SP_A0221.jpg",
-          "date": "2011-07-24 08:04:08",
-          "ts": 1311465848,
-          "src": "assets/photos/2011/SP_A0221.webp",
-          "thumb": "assets/photos/2011/SP_A0221_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0221.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0221_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
-          "name": "SP_A0222.jpg",
-          "date": "2011-07-24 08:04:08",
-          "ts": 1311465848,
-          "src": "assets/photos/2011/SP_A0222.webp",
-          "thumb": "assets/photos/2011/SP_A0222_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0222.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0222_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
-          "name": "SP_A0215.jpg",
-          "date": "2011-07-24 08:04:12",
-          "ts": 1311465852,
-          "src": "assets/photos/2011/SP_A0215.webp",
-          "thumb": "assets/photos/2011/SP_A0215_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0215.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0215_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
-          "name": "SP_A0217.jpg",
-          "date": "2011-07-24 08:04:12",
-          "ts": 1311465852,
-          "src": "assets/photos/2011/SP_A0217.webp",
-          "thumb": "assets/photos/2011/SP_A0217_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0217.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0217_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
-          "name": "SP_A0213.jpg",
-          "date": "2011-07-24 08:04:14",
-          "ts": 1311465854,
-          "src": "assets/photos/2011/SP_A0213.webp",
-          "thumb": "assets/photos/2011/SP_A0213_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0213.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0213_thumb.jpg",
-          "w": 320,
-          "h": 240,
-          "tw": 320,
-          "th": 240
-        },
-        {
+          "kind": "image",
           "name": "SP_A0212.jpg",
-          "date": "2011-07-24 08:04:16",
-          "ts": 1311465856,
+          "date": "",
+          "ts": null,
           "src": "assets/photos/2011/SP_A0212.webp",
           "thumb": "assets/photos/2011/SP_A0212_thumb.webp",
           "srcJpg": "assets/photos/2011/SP_A0212.jpg",
@@ -408,13 +234,294 @@
           "th": 240
         },
         {
-          "name": "SP_A0211.jpg",
-          "date": "2011-07-24 08:04:18",
-          "ts": 1311465858,
-          "src": "assets/photos/2011/SP_A0211.webp",
-          "thumb": "assets/photos/2011/SP_A0211_thumb.webp",
-          "srcJpg": "assets/photos/2011/SP_A0211.jpg",
-          "thumbJpg": "assets/photos/2011/SP_A0211_thumb.jpg",
+          "kind": "image",
+          "name": "SP_A0213.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0213.webp",
+          "thumb": "assets/photos/2011/SP_A0213_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0213.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0213_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0215.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0215.webp",
+          "thumb": "assets/photos/2011/SP_A0215_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0215.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0215_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0217.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0217.webp",
+          "thumb": "assets/photos/2011/SP_A0217_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0217.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0217_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0221.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0221.webp",
+          "thumb": "assets/photos/2011/SP_A0221_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0221.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0221_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0222.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0222.webp",
+          "thumb": "assets/photos/2011/SP_A0222_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0222.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0222_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0315.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0315.webp",
+          "thumb": "assets/photos/2011/SP_A0315_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0315.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0315_thumb.jpg",
+          "w": 240,
+          "h": 320,
+          "tw": 240,
+          "th": 320
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0316.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0316.webp",
+          "thumb": "assets/photos/2011/SP_A0316_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0316.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0316_thumb.jpg",
+          "w": 240,
+          "h": 320,
+          "tw": 240,
+          "th": 320
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0317.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0317.webp",
+          "thumb": "assets/photos/2011/SP_A0317_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0317.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0317_thumb.jpg",
+          "w": 240,
+          "h": 320,
+          "tw": 240,
+          "th": 320
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0318.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0318.webp",
+          "thumb": "assets/photos/2011/SP_A0318_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0318.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0318_thumb.jpg",
+          "w": 240,
+          "h": 320,
+          "tw": 240,
+          "th": 320
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0319.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0319.webp",
+          "thumb": "assets/photos/2011/SP_A0319_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0319.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0319_thumb.jpg",
+          "w": 240,
+          "h": 320,
+          "tw": 240,
+          "th": 320
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0351.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0351.webp",
+          "thumb": "assets/photos/2011/SP_A0351_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0351.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0351_thumb.jpg",
+          "w": 240,
+          "h": 320,
+          "tw": 240,
+          "th": 320
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0352.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0352.webp",
+          "thumb": "assets/photos/2011/SP_A0352_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0352.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0352_thumb.jpg",
+          "w": 240,
+          "h": 320,
+          "tw": 240,
+          "th": 320
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0734.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0734.webp",
+          "thumb": "assets/photos/2011/SP_A0734_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0734.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0734_thumb.jpg",
+          "w": 640,
+          "h": 480,
+          "tw": 420,
+          "th": 315
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0811.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0811.webp",
+          "thumb": "assets/photos/2011/SP_A0811_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0811.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0811_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0868.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0868.webp",
+          "thumb": "assets/photos/2011/SP_A0868_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0868.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0868_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A0870.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A0870.webp",
+          "thumb": "assets/photos/2011/SP_A0870_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A0870.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A0870_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A1068.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A1068.webp",
+          "thumb": "assets/photos/2011/SP_A1068_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A1068.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A1068_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A1069.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A1069.webp",
+          "thumb": "assets/photos/2011/SP_A1069_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A1069.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A1069_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A1070.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A1070.webp",
+          "thumb": "assets/photos/2011/SP_A1070_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A1070.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A1070_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A1075.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A1075.webp",
+          "thumb": "assets/photos/2011/SP_A1075_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A1075.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A1075_thumb.jpg",
+          "w": 320,
+          "h": 240,
+          "tw": 320,
+          "th": 240
+        },
+        {
+          "kind": "image",
+          "name": "SP_A1081.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2011/SP_A1081.webp",
+          "thumb": "assets/photos/2011/SP_A1081_thumb.webp",
+          "srcJpg": "assets/photos/2011/SP_A1081.jpg",
+          "thumbJpg": "assets/photos/2011/SP_A1081_thumb.jpg",
           "w": 320,
           "h": 240,
           "tw": 320,
@@ -426,6 +533,7 @@
       "year": 2012,
       "items": [
         {
+          "kind": "image",
           "name": "IMG_20120617_175908.jpg",
           "date": "2012-06-17 17:59:08",
           "ts": 1339927148,
@@ -439,6 +547,7 @@
           "th": 236
         },
         {
+          "kind": "image",
           "name": "IMG_20120617_175914.jpg",
           "date": "2012-06-17 17:59:14",
           "ts": 1339927154,
@@ -452,6 +561,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120617_175928.jpg",
           "date": "2012-06-17 17:59:28",
           "ts": 1339927168,
@@ -465,6 +575,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120617_180208.jpg",
           "date": "2012-06-17 18:02:08",
           "ts": 1339927328,
@@ -478,6 +589,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120617_180225.jpg",
           "date": "2012-06-17 18:02:25",
           "ts": 1339927345,
@@ -491,6 +603,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120617_184356.jpg",
           "date": "2012-06-17 18:43:56",
           "ts": 1339929836,
@@ -504,6 +617,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120617_184508.jpg",
           "date": "2012-06-17 18:45:08",
           "ts": 1339929908,
@@ -517,6 +631,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120617_184520.jpg",
           "date": "2012-06-17 18:45:20",
           "ts": 1339929920,
@@ -530,6 +645,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120617_184549.jpg",
           "date": "2012-06-17 18:45:49",
           "ts": 1339929949,
@@ -543,6 +659,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120617_185852.jpg",
           "date": "2012-06-17 18:58:52",
           "ts": 1339930732,
@@ -556,6 +673,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120617_190005.jpg",
           "date": "2012-06-17 19:00:05",
           "ts": 1339930805,
@@ -569,6 +687,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120618_175535.jpg",
           "date": "2012-06-18 17:55:35",
           "ts": 1340013335,
@@ -582,6 +701,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120618_184049.jpg",
           "date": "2012-06-18 18:40:49",
           "ts": 1340016049,
@@ -595,6 +715,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120618_184706.jpg",
           "date": "2012-06-18 18:47:06",
           "ts": 1340016426,
@@ -608,6 +729,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120623_085157.jpg",
           "date": "2012-06-23 08:51:57",
           "ts": 1340412717,
@@ -621,6 +743,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120702_104838.jpg",
           "date": "2012-07-02 10:48:38",
           "ts": 1341197318,
@@ -634,6 +757,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203530.jpg",
           "date": "2012-08-03 20:35:30",
           "ts": 1343997330,
@@ -647,6 +771,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203540.jpg",
           "date": "2012-08-03 20:35:40",
           "ts": 1343997340,
@@ -660,6 +785,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203549.jpg",
           "date": "2012-08-03 20:35:49",
           "ts": 1343997349,
@@ -673,6 +799,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203618.jpg",
           "date": "2012-08-03 20:36:18",
           "ts": 1343997378,
@@ -686,6 +813,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203639.jpg",
           "date": "2012-08-03 20:36:39",
           "ts": 1343997399,
@@ -699,6 +827,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203646.jpg",
           "date": "2012-08-03 20:36:46",
           "ts": 1343997406,
@@ -712,6 +841,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203717.jpg",
           "date": "2012-08-03 20:37:17",
           "ts": 1343997437,
@@ -725,6 +855,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203836.jpg",
           "date": "2012-08-03 20:38:36",
           "ts": 1343997516,
@@ -738,6 +869,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203839.jpg",
           "date": "2012-08-03 20:38:39",
           "ts": 1343997519,
@@ -751,6 +883,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203849.jpg",
           "date": "2012-08-03 20:38:49",
           "ts": 1343997529,
@@ -764,6 +897,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203851.jpg",
           "date": "2012-08-03 20:38:51",
           "ts": 1343997531,
@@ -777,6 +911,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203900.jpg",
           "date": "2012-08-03 20:39:00",
           "ts": 1343997540,
@@ -790,6 +925,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_203903.jpg",
           "date": "2012-08-03 20:39:03",
           "ts": 1343997543,
@@ -803,6 +939,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_205508.jpg",
           "date": "2012-08-03 20:55:08",
           "ts": 1343998508,
@@ -816,6 +953,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120803_205517.jpg",
           "date": "2012-08-03 20:55:17",
           "ts": 1343998517,
@@ -829,6 +967,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_101423.jpg",
           "date": "2012-08-04 10:14:23",
           "ts": 1344046463,
@@ -842,6 +981,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_101429.jpg",
           "date": "2012-08-04 10:14:29",
           "ts": 1344046469,
@@ -855,6 +995,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_101442.jpg",
           "date": "2012-08-04 10:14:42",
           "ts": 1344046482,
@@ -868,6 +1009,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_101447.jpg",
           "date": "2012-08-04 10:14:47",
           "ts": 1344046487,
@@ -881,6 +1023,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_101454.jpg",
           "date": "2012-08-04 10:14:54",
           "ts": 1344046494,
@@ -894,6 +1037,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_101500.jpg",
           "date": "2012-08-04 10:15:00",
           "ts": 1344046500,
@@ -907,6 +1051,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_122939.jpg",
           "date": "2012-08-04 12:29:39",
           "ts": 1344054579,
@@ -920,6 +1065,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_123521.jpg",
           "date": "2012-08-04 12:35:21",
           "ts": 1344054921,
@@ -933,6 +1079,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_123535.jpg",
           "date": "2012-08-04 12:35:35",
           "ts": 1344054935,
@@ -946,6 +1093,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_123542.jpg",
           "date": "2012-08-04 12:35:42",
           "ts": 1344054942,
@@ -959,6 +1107,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_123547.jpg",
           "date": "2012-08-04 12:35:47",
           "ts": 1344054947,
@@ -972,6 +1121,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20120804_123551.jpg",
           "date": "2012-08-04 12:35:51",
           "ts": 1344054951,
@@ -985,6 +1135,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2012-08-30-10-19-57.jpg",
           "date": "2012-08-30 10:19:57",
           "ts": 1346293197,
@@ -998,6 +1149,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2012-08-30-10-20-07.jpg",
           "date": "2012-08-30 10:20:07",
           "ts": 1346293207,
@@ -1011,6 +1163,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2012-08-30-10-20-16.jpg",
           "date": "2012-08-30 10:20:16",
           "ts": 1346293216,
@@ -1024,6 +1177,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2012-09-01-17-43-06.jpg",
           "date": "2012-09-01 17:43:06",
           "ts": 1346492586,
@@ -1037,6 +1191,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2012-09-01-17-43-27.jpg",
           "date": "2012-09-01 17:43:27",
           "ts": 1346492607,
@@ -1050,6 +1205,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2012-09-01-17-43-43.jpg",
           "date": "2012-09-01 17:43:43",
           "ts": 1346492623,
@@ -1063,6 +1219,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2012-09-01-17-43-56.jpg",
           "date": "2012-09-01 17:43:56",
           "ts": 1346492636,
@@ -1076,6 +1233,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2012-09-01-17-44-11.jpg",
           "date": "2012-09-01 17:44:11",
           "ts": 1346492651,
@@ -1089,6 +1247,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2012-09-01-17-44-49.jpg",
           "date": "2012-09-01 17:44:49",
           "ts": 1346492689,
@@ -1102,6 +1261,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2012-09-01-17-44-54.jpg",
           "date": "2012-09-01 17:44:54",
           "ts": 1346492694,
@@ -1115,6 +1275,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2012-09-01-17-45-41.jpg",
           "date": "2012-09-01 17:45:41",
           "ts": 1346492741,
@@ -1133,6 +1294,7 @@
       "year": 2013,
       "items": [
         {
+          "kind": "image",
           "name": "C360_2013-02-21-14-53-08-589.jpg",
           "date": "2013-02-21 14:53:08",
           "ts": 1361429588,
@@ -1146,6 +1308,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "C360_2013-02-21-14-53-18-283_org.jpg",
           "date": "2013-02-21 14:53:18",
           "ts": 1361429598,
@@ -1159,6 +1322,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20130803_111033.jpg",
           "date": "2013-08-03 11:10:33",
           "ts": 1375499433,
@@ -1172,6 +1336,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20130803_111035.jpg",
           "date": "2013-08-03 11:10:35",
           "ts": 1375499435,
@@ -1185,6 +1350,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20130803_111040.jpg",
           "date": "2013-08-03 11:10:40",
           "ts": 1375499440,
@@ -1203,6 +1369,7 @@
       "year": 2014,
       "items": [
         {
+          "kind": "image",
           "name": "IMG_20140128_122350.jpg",
           "date": "2014-01-28 12:23:50",
           "ts": 1390883030,
@@ -1216,6 +1383,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_122354.jpg",
           "date": "2014-01-28 12:23:54",
           "ts": 1390883034,
@@ -1229,6 +1397,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_122401.jpg",
           "date": "2014-01-28 12:24:01",
           "ts": 1390883041,
@@ -1242,6 +1411,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_124417.jpg",
           "date": "2014-01-28 12:44:17",
           "ts": 1390884257,
@@ -1255,6 +1425,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_124424.jpg",
           "date": "2014-01-28 12:44:24",
           "ts": 1390884264,
@@ -1268,6 +1439,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_124434.jpg",
           "date": "2014-01-28 12:44:34",
           "ts": 1390884274,
@@ -1281,6 +1453,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_124437.jpg",
           "date": "2014-01-28 12:44:37",
           "ts": 1390884277,
@@ -1294,6 +1467,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_124443.jpg",
           "date": "2014-01-28 12:44:43",
           "ts": 1390884283,
@@ -1307,6 +1481,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_124454.jpg",
           "date": "2014-01-28 12:44:54",
           "ts": 1390884294,
@@ -1320,6 +1495,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_125405.jpg",
           "date": "2014-01-28 12:54:05",
           "ts": 1390884845,
@@ -1333,6 +1509,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_125415.jpg",
           "date": "2014-01-28 12:54:15",
           "ts": 1390884855,
@@ -1346,6 +1523,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_125443.jpg",
           "date": "2014-01-28 12:54:43",
           "ts": 1390884883,
@@ -1359,6 +1537,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_125454.jpg",
           "date": "2014-01-28 12:54:54",
           "ts": 1390884894,
@@ -1372,6 +1551,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_125518.jpg",
           "date": "2014-01-28 12:55:18",
           "ts": 1390884918,
@@ -1385,6 +1565,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_125815.jpg",
           "date": "2014-01-28 12:58:15",
           "ts": 1390885095,
@@ -1398,6 +1579,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_125839.jpg",
           "date": "2014-01-28 12:58:39",
           "ts": 1390885119,
@@ -1411,6 +1593,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_130231.jpg",
           "date": "2014-01-28 13:02:31",
           "ts": 1390885351,
@@ -1424,6 +1607,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140128_130254.jpg",
           "date": "2014-01-28 13:02:54",
           "ts": 1390885374,
@@ -1437,6 +1621,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140131_145711.jpg",
           "date": "2014-01-31 14:57:11",
           "ts": 1391151431,
@@ -1450,6 +1635,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140131_172133.jpg",
           "date": "2014-01-31 17:21:33",
           "ts": 1391160093,
@@ -1463,6 +1649,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140131_172136.jpg",
           "date": "2014-01-31 17:21:36",
           "ts": 1391160096,
@@ -1476,6 +1663,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_154424.jpg",
           "date": "2014-02-20 15:44:24",
           "ts": 1392882264,
@@ -1489,6 +1677,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_161841.jpg",
           "date": "2014-02-20 16:18:41",
           "ts": 1392884321,
@@ -1502,6 +1691,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_161848.jpg",
           "date": "2014-02-20 16:18:48",
           "ts": 1392884328,
@@ -1515,6 +1705,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_161902.jpg",
           "date": "2014-02-20 16:19:02",
           "ts": 1392884342,
@@ -1528,6 +1719,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_161913.jpg",
           "date": "2014-02-20 16:19:13",
           "ts": 1392884353,
@@ -1541,6 +1733,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_161958.jpg",
           "date": "2014-02-20 16:19:58",
           "ts": 1392884398,
@@ -1554,6 +1747,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_162001.jpg",
           "date": "2014-02-20 16:20:01",
           "ts": 1392884401,
@@ -1567,6 +1761,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_162009.jpg",
           "date": "2014-02-20 16:20:09",
           "ts": 1392884409,
@@ -1580,6 +1775,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_162215.jpg",
           "date": "2014-02-20 16:22:15",
           "ts": 1392884535,
@@ -1593,6 +1789,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_162220.jpg",
           "date": "2014-02-20 16:22:20",
           "ts": 1392884540,
@@ -1606,6 +1803,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_162228.jpg",
           "date": "2014-02-20 16:22:28",
           "ts": 1392884548,
@@ -1619,6 +1817,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_162250.jpg",
           "date": "2014-02-20 16:22:50",
           "ts": 1392884570,
@@ -1632,6 +1831,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20140220_162402.jpg",
           "date": "2014-02-20 16:24:02",
           "ts": 1392884642,
@@ -1650,6 +1850,7 @@
       "year": 2015,
       "items": [
         {
+          "kind": "image",
           "name": "IMG_20150822_094710.jpg",
           "date": "2015-08-22 09:47:10",
           "ts": 1440208030,
@@ -1663,6 +1864,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_094712.jpg",
           "date": "2015-08-22 09:47:12",
           "ts": 1440208032,
@@ -1676,6 +1878,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_095513.jpg",
           "date": "2015-08-22 09:55:13",
           "ts": 1440208513,
@@ -1689,6 +1892,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_095538.jpg",
           "date": "2015-08-22 09:55:38",
           "ts": 1440208538,
@@ -1702,6 +1906,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_163958.jpg",
           "date": "2015-08-22 16:39:58",
           "ts": 1440232798,
@@ -1715,6 +1920,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_164007.jpg",
           "date": "2015-08-22 16:40:07",
           "ts": 1440232807,
@@ -1728,6 +1934,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_171230.jpg",
           "date": "2015-08-22 17:12:30",
           "ts": 1440234750,
@@ -1741,6 +1948,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_171233.jpg",
           "date": "2015-08-22 17:12:33",
           "ts": 1440234753,
@@ -1754,6 +1962,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_172941.jpg",
           "date": "2015-08-22 17:29:41",
           "ts": 1440235781,
@@ -1767,6 +1976,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_172954.jpg",
           "date": "2015-08-22 17:29:54",
           "ts": 1440235794,
@@ -1780,6 +1990,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_173002.jpg",
           "date": "2015-08-22 17:30:02",
           "ts": 1440235802,
@@ -1793,6 +2004,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_173016.jpg",
           "date": "2015-08-22 17:30:16",
           "ts": 1440235816,
@@ -1806,6 +2018,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_173646.jpg",
           "date": "2015-08-22 17:36:45",
           "ts": 1440236205,
@@ -1819,6 +2032,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20150822_173648.jpg",
           "date": "2015-08-22 17:36:48",
           "ts": 1440236208,
@@ -1837,6 +2051,7 @@
       "year": 2016,
       "items": [
         {
+          "kind": "image",
           "name": "IMG_20160708_173102.jpg",
           "date": "2016-07-08 17:31:02",
           "ts": 1467970262,
@@ -1850,6 +2065,7 @@
           "th": 311
         },
         {
+          "kind": "image",
           "name": "IMG_20160708_173106.jpg",
           "date": "2016-07-08 17:31:06",
           "ts": 1467970266,
@@ -1863,6 +2079,7 @@
           "th": 311
         },
         {
+          "kind": "image",
           "name": "IMG_20160708_173119.jpg",
           "date": "2016-07-08 17:31:19",
           "ts": 1467970279,
@@ -1876,6 +2093,7 @@
           "th": 311
         },
         {
+          "kind": "image",
           "name": "IMG_20160708_173123.jpg",
           "date": "2016-07-08 17:31:23",
           "ts": 1467970283,
@@ -1894,6 +2112,7 @@
       "year": 2017,
       "items": [
         {
+          "kind": "image",
           "name": "IMG_20170124_125002.jpg",
           "date": "2017-01-24 12:50:02",
           "ts": 1485233402,
@@ -1907,6 +2126,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_125010.jpg",
           "date": "2017-01-24 12:50:10",
           "ts": 1485233410,
@@ -1920,6 +2140,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_125015.jpg",
           "date": "2017-01-24 12:50:15",
           "ts": 1485233415,
@@ -1933,6 +2154,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_125017.jpg",
           "date": "2017-01-24 12:50:17",
           "ts": 1485233417,
@@ -1946,6 +2168,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_125103.jpg",
           "date": "2017-01-24 12:51:03",
           "ts": 1485233463,
@@ -1959,6 +2182,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_125105.jpg",
           "date": "2017-01-24 12:51:05",
           "ts": 1485233465,
@@ -1972,6 +2196,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_125108.jpg",
           "date": "2017-01-24 12:51:08",
           "ts": 1485233468,
@@ -1985,6 +2210,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_134119.jpg",
           "date": "2017-01-24 13:41:19",
           "ts": 1485236479,
@@ -1998,6 +2224,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_134130.jpg",
           "date": "2017-01-24 13:41:30",
           "ts": 1485236490,
@@ -2011,6 +2238,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_134139.jpg",
           "date": "2017-01-24 13:41:39",
           "ts": 1485236499,
@@ -2024,6 +2252,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_134155.jpg",
           "date": "2017-01-24 13:41:55",
           "ts": 1485236515,
@@ -2037,6 +2266,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_134207.jpg",
           "date": "2017-01-24 13:42:07",
           "ts": 1485236527,
@@ -2050,6 +2280,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170124_134210.jpg",
           "date": "2017-01-24 13:42:10",
           "ts": 1485236530,
@@ -2063,6 +2294,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170126_171355.jpg",
           "date": "2017-01-26 17:13:55",
           "ts": 1485422035,
@@ -2076,6 +2308,7 @@
           "th": 311
         },
         {
+          "kind": "image",
           "name": "IMG_20170126_171400.jpg",
           "date": "2017-01-26 17:14:00",
           "ts": 1485422040,
@@ -2089,6 +2322,7 @@
           "th": 311
         },
         {
+          "kind": "image",
           "name": "IMG_20170126_171502.jpg",
           "date": "2017-01-26 17:15:02",
           "ts": 1485422102,
@@ -2102,6 +2336,7 @@
           "th": 311
         },
         {
+          "kind": "image",
           "name": "IMG_20170126_171509.jpg",
           "date": "2017-01-26 17:15:09",
           "ts": 1485422109,
@@ -2115,6 +2350,7 @@
           "th": 311
         },
         {
+          "kind": "image",
           "name": "IMG_20170126_171702.jpg",
           "date": "2017-01-26 17:17:01",
           "ts": 1485422221,
@@ -2128,6 +2364,7 @@
           "th": 311
         },
         {
+          "kind": "image",
           "name": "IMG_20170529_131912.jpg",
           "date": "2017-05-29 13:19:12",
           "ts": 1496035152,
@@ -2141,6 +2378,7 @@
           "th": 314
         },
         {
+          "kind": "image",
           "name": "IMG_20170529_131917.jpg",
           "date": "2017-05-29 13:19:17",
           "ts": 1496035157,
@@ -2154,6 +2392,7 @@
           "th": 314
         },
         {
+          "kind": "image",
           "name": "IMG_20170529_132020.jpg",
           "date": "2017-05-29 13:20:20",
           "ts": 1496035220,
@@ -2167,6 +2406,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170529_132024.jpg",
           "date": "2017-05-29 13:20:24",
           "ts": 1496035224,
@@ -2180,6 +2420,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170529_132313.jpg",
           "date": "2017-05-29 13:23:13",
           "ts": 1496035393,
@@ -2193,6 +2434,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20170529_143128.jpg",
           "date": "2017-05-29 14:31:28",
           "ts": 1496039488,
@@ -2206,6 +2448,7 @@
           "th": 314
         },
         {
+          "kind": "image",
           "name": "IMG_20171002_143013.jpg",
           "date": "2017-10-02 14:30:13",
           "ts": 1506925813,
@@ -2224,6 +2467,7 @@
       "year": 2018,
       "items": [
         {
+          "kind": "image",
           "name": "IMG_20180210_150820.jpg",
           "date": "2018-02-10 15:08:20",
           "ts": 1518246500,
@@ -2237,6 +2481,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20180210_150826.jpg",
           "date": "2018-02-10 15:08:26",
           "ts": 1518246506,
@@ -2250,6 +2495,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20180210_150834.jpg",
           "date": "2018-02-10 15:08:34",
           "ts": 1518246514,
@@ -2263,6 +2509,7 @@
           "th": 420
         },
         {
+          "kind": "image",
           "name": "IMG_20180210_164132.jpg",
           "date": "2018-02-10 16:41:32",
           "ts": 1518252092,
@@ -2276,11 +2523,150 @@
           "th": 314
         }
       ]
+    },
+    {
+      "year": 2021,
+      "items": [
+        {
+          "kind": "video",
+          "name": "2021-1.mp4",
+          "date": "",
+          "ts": null,
+          "video": "assets/videos/2021/2021-1.mp4",
+          "thumb": "assets/video-placeholder.svg",
+          "thumbJpg": "",
+          "poster": "",
+          "posterJpg": "",
+          "w": 0,
+          "h": 0,
+          "tw": 0,
+          "th": 0
+        },
+        {
+          "kind": "video",
+          "name": "2021-2.mp4",
+          "date": "",
+          "ts": null,
+          "video": "assets/videos/2021/2021-2.mp4",
+          "thumb": "assets/video-placeholder.svg",
+          "thumbJpg": "",
+          "poster": "",
+          "posterJpg": "",
+          "w": 0,
+          "h": 0,
+          "tw": 0,
+          "th": 0
+        },
+        {
+          "kind": "image",
+          "name": "2021-3.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2021/2021-3.webp",
+          "thumb": "assets/photos/2021/2021-3_thumb.webp",
+          "srcJpg": "assets/photos/2021/2021-3.jpg",
+          "thumbJpg": "assets/photos/2021/2021-3_thumb.jpg",
+          "w": 1080,
+          "h": 1440,
+          "tw": 315,
+          "th": 420
+        },
+        {
+          "kind": "image",
+          "name": "2021-4.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2021/2021-4.webp",
+          "thumb": "assets/photos/2021/2021-4_thumb.webp",
+          "srcJpg": "assets/photos/2021/2021-4.jpg",
+          "thumbJpg": "assets/photos/2021/2021-4_thumb.jpg",
+          "w": 1080,
+          "h": 1440,
+          "tw": 315,
+          "th": 420
+        },
+        {
+          "kind": "video",
+          "name": "2021-5.mp4",
+          "date": "",
+          "ts": null,
+          "video": "assets/videos/2021/2021-5.mp4",
+          "thumb": "assets/video-placeholder.svg",
+          "thumbJpg": "",
+          "poster": "",
+          "posterJpg": "",
+          "w": 0,
+          "h": 0,
+          "tw": 0,
+          "th": 0
+        },
+        {
+          "kind": "image",
+          "name": "2021-6.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2021/2021-6.webp",
+          "thumb": "assets/photos/2021/2021-6_thumb.webp",
+          "srcJpg": "assets/photos/2021/2021-6.jpg",
+          "thumbJpg": "assets/photos/2021/2021-6_thumb.jpg",
+          "w": 1080,
+          "h": 1440,
+          "tw": 315,
+          "th": 420
+        },
+        {
+          "kind": "video",
+          "name": "2021-6.mp4",
+          "date": "",
+          "ts": null,
+          "video": "assets/videos/2021/2021-6.mp4",
+          "thumb": "assets/video-placeholder.svg",
+          "thumbJpg": "",
+          "poster": "",
+          "posterJpg": "",
+          "w": 0,
+          "h": 0,
+          "tw": 0,
+          "th": 0
+        },
+        {
+          "kind": "video",
+          "name": "2021-7.mp4",
+          "date": "",
+          "ts": null,
+          "video": "assets/videos/2021/2021-7.mp4",
+          "thumb": "assets/video-placeholder.svg",
+          "thumbJpg": "",
+          "poster": "",
+          "posterJpg": "",
+          "w": 0,
+          "h": 0,
+          "tw": 0,
+          "th": 0
+        },
+        {
+          "kind": "image",
+          "name": "2021-8.jpg",
+          "date": "",
+          "ts": null,
+          "src": "assets/photos/2021/2021-8.webp",
+          "thumb": "assets/photos/2021/2021-8_thumb.webp",
+          "srcJpg": "assets/photos/2021/2021-8.jpg",
+          "thumbJpg": "assets/photos/2021/2021-8_thumb.jpg",
+          "w": 1080,
+          "h": 1440,
+          "tw": 315,
+          "th": 420
+        }
+      ]
     }
   ],
   "counts": {
-    "years": 8,
-    "photos": 172,
-    "regenerated": 172
+    "years": 10,
+    "items": 186,
+    "photos": 181,
+    "videos": 5,
+    "regeneratedPhotos": 9,
+    "copiedVideos": 5
   }
 }
