@@ -20,7 +20,8 @@ test("时间轴渲染，点击照片/视频可打开/关闭查看器", async ({ 
   if (isVideo) {
     const v = page.locator("#lightboxVideo");
     await expect(v).toBeVisible();
-    await expect(v).toHaveJSProperty("src", /assets\/videos\//);
+    // video.src 的 JS 属性会被浏览器解析成绝对 URL，因此这里用 attribute 来做正则匹配更稳
+    await expect(v).toHaveAttribute("src", /assets\/videos\//);
   } else {
     const img = page.locator("#lightboxImg");
     await expect(img).toBeVisible();
